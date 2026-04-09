@@ -25,7 +25,7 @@ class LatvianLanguageSeeder extends Seeder
         'americas' => 'Amerika',
         'asia' => 'Āzija',
         'europe' => 'Eiropa',
-        'oceania' => 'Ozeanien',
+        'oceania' => 'Okeānija',
     ];
 
     /**
