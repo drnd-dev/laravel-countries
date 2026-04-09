@@ -1,4 +1,5 @@
 <?php
+
 namespace Lwwcas\LaravelCountries\Trait;
 
 use Lwwcas\LaravelCountries\Database\Seeders\Languages\ArabicLanguageSeeder as Arabic;
@@ -18,7 +19,7 @@ trait WithLanguages
     /**
      * The list of languages that can be installed.
      *
-     * @var array
+     * @var array<string, class-string|null>
      */
     public array $languages = [
         'None' => null,
@@ -38,7 +39,7 @@ trait WithLanguages
     /**
      * The list of languages that can be installed by key.
      *
-     * @var array
+     * @var array<string, string>
      */
     public array $languagesByLocale = [
         'en' => 'English',
@@ -59,7 +60,7 @@ trait WithLanguages
      *
      * @return $this
      */
-    public function askToRunSeeds(array $languages = null): self
+    public function askToRunSeeds(?array $languages = null): self
     {
         if ($languages === null) {
             $languages = array_keys($this->languages);
@@ -103,7 +104,7 @@ trait WithLanguages
             $selectedLanguages = array_unique($selectedLanguages);
             if (in_array('None', $selectedLanguages)) {
                 $this->info('You chose not to install any additional languages.');
-            } else if (in_array('All', $selectedLanguages)){
+            } elseif (in_array('All', $selectedLanguages)) {
                 $this->info('You chose to install all available languages.');
             } else {
                 $this->info('You have selected the following languages:');
@@ -116,13 +117,13 @@ trait WithLanguages
         $this->runSeeds($selectedLanguages);
 
         $this->newLine();
+
         return $this;
     }
 
     /**
      * Run the selected language seeds.
      *
-     * @param  array  $selectedLanguages
      * @return $this
      */
     public function runSeeds(array $selectedLanguages): self
@@ -166,6 +167,7 @@ trait WithLanguages
         }
 
         $this->info('Seeds executed successfully!');
+
         return $this;
     }
 }

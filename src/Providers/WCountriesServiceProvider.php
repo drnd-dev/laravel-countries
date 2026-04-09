@@ -2,11 +2,9 @@
 
 namespace Lwwcas\LaravelCountries\Providers;
 
-use Carbon\Carbon;
 use Lwwcas\LaravelCountries\Commands\WCountriesInstallCommand;
 use Lwwcas\LaravelCountries\Commands\WCountriesRunLanguagesSeeds;
 use Lwwcas\LaravelCountries\WCountries;
-use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -14,7 +12,6 @@ class WCountriesServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
-
         $package
             ->setBasePath(__DIR__)
             ->name('lwwcas-countries')
@@ -35,10 +32,13 @@ class WCountriesServiceProvider extends PackageServiceProvider
             ->publishesServiceProvider('WCountriesServiceProvider');
     }
 
+    /**
+     * @return void
+     */
     public function packageRegistered()
     {
-        $this->app->bind('w-countries', function ($app) {
-            return new WCountries();
+        $this->app->bind('w-countries', function () {
+            return new WCountries;
         });
 
         $this->app->alias('laravel-countries', WCountries::class);

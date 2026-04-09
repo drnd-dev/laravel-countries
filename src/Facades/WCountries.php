@@ -5,7 +5,7 @@ namespace Lwwcas\LaravelCountries\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \Lwwcas\LaravelCountries\Skeleton\SkeletonClass
+ * @see \Lwwcas\LaravelCountries\WCountries
  */
 class WCountries extends Facade
 {
