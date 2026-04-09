@@ -6,6 +6,7 @@ use Lwwcas\LaravelCountries\Database\Seeders\Languages\DutchLanguageSeeder as Du
 use Lwwcas\LaravelCountries\Database\Seeders\Languages\FrenchLanguageSeeder as French;
 use Lwwcas\LaravelCountries\Database\Seeders\Languages\GermanLanguageSeeder as German;
 use Lwwcas\LaravelCountries\Database\Seeders\Languages\ItalianLanguageSeeder as Italian;
+use Lwwcas\LaravelCountries\Database\Seeders\Languages\LatvianLanguageSeeder as Latvian;
 use Lwwcas\LaravelCountries\Database\Seeders\Languages\PortugueseLanguageSeeder as Portuguese;
 use Lwwcas\LaravelCountries\Database\Seeders\Languages\RussianLanguageSeeder as Russian;
 use Lwwcas\LaravelCountries\Database\Seeders\Languages\SpanishLanguageSeeder as Spanish;
@@ -28,6 +29,7 @@ trait WithLanguages
         'French' => French::class,
         'German' => German::class,
         'Italian' => Italian::class,
+        'Latvian' => Latvian::class,
         'Portuguese' => Portuguese::class,
         'Russian' => Russian::class,
         'Spanish' => Spanish::class,
@@ -45,6 +47,7 @@ trait WithLanguages
         'fr' => 'French',
         'de' => 'German',
         'it' => 'Italian',
+        'lv' => 'Latvian',
         'pt' => 'Portuguese',
         'ru' => 'Russian',
         'es' => 'Spanish',
