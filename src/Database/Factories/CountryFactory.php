@@ -36,7 +36,13 @@ class CountryFactory extends Factory
 
             'official_name' => Str::title($name),
             'capital' => 'Capital '.Str::title($name),
-            'iso_alpha_2' => fake()->countryCode(),
+            'iso_alpha_2' => static function () {
+                do {
+                    $code = fake()->countryCode();
+                } while (Country::query()->withoutGlobalScopes()->where('iso_alpha_2', $code)->exists());
+
+                return $code;
+            },
             'iso_alpha_3' => fake()->countryISOAlpha3(),
             'iso_numeric' => fake()->randomNumber(3, false),
 
