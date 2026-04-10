@@ -27,7 +27,7 @@ jobs:
                     composer update --prefer-dist --no-interaction --no-progress
 
             -   name: Run PHPStan
-                run: composer lint -- --no-progress
+                run: composer lint -- --no-progress --memory-limit=512M
 
     style:
         name: Pint Analysis
