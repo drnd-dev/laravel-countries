@@ -36,10 +36,10 @@ class CountryFactory extends Factory
 
             'official_name' => Str::title($name),
             'capital' => 'Capital '.Str::title($name),
-            'iso_alpha_2' => static function () {
+            'iso_alpha_2' => static function (array $attributes) {
                 do {
                     $code = fake()->countryCode();
-                } while (Country::query()->withoutGlobalScopes()->where('iso_alpha_2', $code)->exists());
+                } while (Country::query()->withoutGlobalScopes()->where('lc_region_id', $attributes['lc_region_id'])->where('iso_alpha_2', $code)->exists());
 
                 return $code;
             },
