@@ -21,7 +21,7 @@ class CountryRegionFactory extends Factory
 
     protected array $regions = [
         'Africa',
-        'Americas',
+        'America',
         'Asia',
         'Europe',
         'Oceania',
@@ -37,7 +37,7 @@ class CountryRegionFactory extends Factory
         return [
             'iso_alpha_2' => fake()->countryCode().rand(1, 9999),
             'icao' => Str::upper(fake()->randomLetter().fake()->randomLetter()),
-            'iucn' => fake()->randomElements($this->regions)[0].' '.fake()->word(),
+            'iucn' => substr(fake()->randomElement($this->regions).' '.fake()->word(), 0, 10),
             'tdwg' => fake()->word(),
             'is_visible' => true,
         ];
