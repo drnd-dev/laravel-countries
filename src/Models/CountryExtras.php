@@ -2,12 +2,33 @@
 
 namespace Lwwcas\LaravelCountries\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Lwwcas\LaravelCountries\Abstract\CountryModel;
+use Lwwcas\LaravelCountries\Database\Factories\CountryExtrasFactory;
 
+/**
+ * @property int $id
+ * @property int $lc_country_id
+ * @property string|null $national_sport
+ * @property string|null $cybersecurity_agency
+ * @property array|null $popular_technologies
+ * @property array|null $internet
+ * @property array|null $religions
+ * @property array|null $international_organizations
+ * @property-read Country|null $country
+ *
+ * @method static Builder<static> newModelQuery()
+ * @method static Builder<static> newQuery()
+ * @method static Builder<static> query()
+ * @method static CountryExtrasFactory factory(...$parameters)
+ *
+ * @mixin CountryModel
+ */
 class CountryExtras extends CountryModel
 {
+    /** @use HasFactory<CountryExtrasFactory> */
     use HasFactory;
 
     /**
@@ -27,7 +48,7 @@ class CountryExtras extends CountryModel
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var list<string>
      */
     protected $fillable = [
         'lc_country_id',
@@ -40,20 +61,12 @@ class CountryExtras extends CountryModel
     ];
 
     /**
-     * The attributes that should be cast.
-     *
-     * This section is particularly important due to limitations introduced in Laravel 10.
-     * Laravel 10 requires specific handling of attributes to ensure proper type casting
-     * and avoid issues such as "Array to string conversion."
-     *
-     * @var array
+     * Create a new factory instance for the model.
      */
-    protected $casts = [
-        'popular_technologies' => 'array',
-        'international_organizations' => 'array',
-        'religions' => 'array',
-        'internet' => 'array',
-    ];
+    public static function newFactory(): CountryExtrasFactory
+    {
+        return CountryExtrasFactory::new();
+    }
 
     /**
      * Get the attributes that should be cast.
@@ -72,6 +85,8 @@ class CountryExtras extends CountryModel
 
     /**
      * Get the country that owns the CountryExtras
+     *
+     * @return HasOne<Country, $this>
      */
     public function country(): HasOne
     {

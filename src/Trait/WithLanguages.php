@@ -93,6 +93,7 @@ trait WithLanguages
         $selectedLanguages = [];
         $languagesConfirmed = false;
         do {
+            /** @var array $selectedLanguages */
             $selectedLanguages = $this->choice(
                 'Please select the languages you want to install:',
                 $languages,

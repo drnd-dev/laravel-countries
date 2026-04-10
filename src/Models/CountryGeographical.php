@@ -2,12 +2,31 @@
 
 namespace Lwwcas\LaravelCountries\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Lwwcas\LaravelCountries\Abstract\CountryModel;
+use Lwwcas\LaravelCountries\Database\Factories\CountryGeographicalFactory;
 
+/**
+ * @property int $id
+ * @property int $lc_country_id
+ * @property string $type
+ * @property string $features_type
+ * @property array $properties
+ * @property array $geometry
+ * @property-read Country|null $country
+ *
+ * @method static Builder<static> newModelQuery()
+ * @method static Builder<static> newQuery()
+ * @method static Builder<static> query()
+ * @method static CountryGeographicalFactory factory(...$parameters)
+ *
+ * @mixin CountryModel
+ */
 class CountryGeographical extends CountryModel
 {
+    /** @use HasFactory<CountryGeographicalFactory> */
     use HasFactory;
 
     /**
@@ -27,7 +46,7 @@ class CountryGeographical extends CountryModel
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var list<string>
      */
     protected $fillable = [
         'lc_country_id',
@@ -38,18 +57,12 @@ class CountryGeographical extends CountryModel
     ];
 
     /**
-     * The attributes that should be cast.
-     *
-     * This section is particularly important due to limitations introduced in Laravel 10.
-     * Laravel 10 requires specific handling of attributes to ensure proper type casting
-     * and avoid issues such as "Array to string conversion."
-     *
-     * @var array
+     * Create a new factory instance for the model.
      */
-    protected $casts = [
-        'properties' => 'array',
-        'geometry' => 'array',
-    ];
+    public static function newFactory(): CountryGeographicalFactory
+    {
+        return CountryGeographicalFactory::new();
+    }
 
     /**
      * Get the attributes that should be cast.
@@ -66,6 +79,8 @@ class CountryGeographical extends CountryModel
 
     /**
      * Get the country that owns the CountryGeographical
+     *
+     * @return HasOne<Country, $this>
      */
     public function country(): HasOne
     {
@@ -75,11 +90,11 @@ class CountryGeographical extends CountryModel
     /**
      * Get the geographical data as a GeoJSON feature collection.
      *
-     * @return array
+     * @return array{type: string, features: array{type: string, properties: array, geometry: array}}
      */
-    public function getGeoData()
+    public function getGeoData(): array
     {
-        $data = [
+        return [
             'type' => $this->type,
             'features' => [
                 'type' => $this->features_type,
@@ -87,7 +102,5 @@ class CountryGeographical extends CountryModel
                 'geometry' => $this->geometry,
             ],
         ];
-
-        return $data;
     }
 }

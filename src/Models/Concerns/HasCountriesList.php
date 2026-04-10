@@ -3,7 +3,6 @@
 namespace Lwwcas\LaravelCountries\Models\Concerns;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Lwwcas\LaravelCountries\Models\Country;
 use Lwwcas\LaravelCountries\Trait\WithOnlyWhereFunctions;
 use Lwwcas\LaravelCountries\Trait\WithPairWhereFunctions;
@@ -15,10 +14,8 @@ trait HasCountriesList
 
     /**
      * Get a list of countries.
-     *
-     * @return Builder
      */
-    public static function getList()
+    public static function getList(): static
     {
         return new static;
     }
@@ -29,11 +26,11 @@ trait HasCountriesList
      * This method return a list of countries with their names and slugs.
      * The list is cached for a long time to avoid to query the database too much.
      *
-     * @return Collection
+     * @return Builder<Country>
      */
-    public function withNamesAndSlugs()
+    public function withNamesAndSlugs(): Builder
     {
-        return Country::select(
+        return Country::query()->select(
             'lc_countries.id as id',
             'lc_countries.uid as uid',
             'lc_countries.official_name as official_name',
@@ -59,11 +56,11 @@ trait HasCountriesList
      * This method return a list of countries with their names, slugs and flags.
      * The list is cached for a long time to avoid to query the database too much.
      *
-     * @return Collection
+     * @return Builder<Country>
      */
-    public function withNamesSlugsAndFlags()
+    public function withNamesSlugsAndFlags(): Builder
     {
-        return Country::select(
+        return Country::query()->select(
             'lc_countries.id as id',
             'lc_countries.uid as uid',
             'lc_countries.official_name as official_name',

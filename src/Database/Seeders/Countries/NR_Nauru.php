@@ -10,19 +10,17 @@ class NR_Nauru extends CountrySeeder
     /**
      * Attribute that defines the language of countries
      */
-    public ?string $lang = 'en';
+    public string $lang = 'en';
 
     /**
      * Attribute that defines the language of countries
      */
-    public ?string $region = 'oceania';
+    public string $region = 'oceania';
 
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         // Set the country's common name
         $this->name = 'Nauru';
@@ -250,7 +248,7 @@ class NR_Nauru extends CountrySeeder
         Builder::country($this);
     }
 
-    public function geographical()
+    public function geographical(): string
     {
         return '{"type":"FeatureCollection","features":[{"type":"Feature","properties":{"cca2":"nr"},"geometry":{"type":"Polygon","coordinates":[[[166.929138,-0.552222],[166.922211,-0.552222],[166.916931,-0.550833],[166.909149,-0.544722],[166.904419,-0.535833],[166.904419,-0.528889],[166.907745,-0.511945],[166.916077,-0.499444],[166.920258,-0.496667],[166.930542,-0.493333],[166.948303,-0.496667],[166.953033,-0.499444],[166.958588,-0.506389],[166.958008,-0.513333],[166.955811,-0.518611],[166.9422,-0.544722],[166.938873,-0.548889],[166.935242,-0.551667],[166.929138,-0.552222]]]}}]}';
     }

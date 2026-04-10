@@ -13,9 +13,16 @@
     </testsuites>
     <source>
         <include>
-            <directory suffix=".php">./app</directory>
             <directory suffix=".php">./src</directory>
         </include>
+        <exclude>
+            <directory>./src/config</directory>
+            <directory>./src/Database/Factories</directory>
+            <directory>./src/Database/migrations</directory>
+            <directory>./src/Database/Seeders/Countries</directory>
+            <directory>./src/Database/Seeders/Languages</directory>
+            <directory>./src/Providers</directory>
+        </exclude>
     </source>
     <php>
         <env name="DB_CONNECTION" value="sqlite"/>

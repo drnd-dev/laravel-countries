@@ -8,18 +8,18 @@ use Illuminate\Support\Str;
 use Lwwcas\LaravelCountries\Models\CountryRegion;
 
 /**
- * @extends Factory<Model>
+ * @extends Factory<CountryRegion>
  */
 class CountryRegionFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
-     * @var class-string<\Illuminate\Database\Eloquent\Model>
+     * @var class-string<CountryRegion>
      */
     protected $model = CountryRegion::class;
 
-    protected $regions = [
+    protected array $regions = [
         'Africa',
         'Americas',
         'Asia',
@@ -36,7 +36,7 @@ class CountryRegionFactory extends Factory
     {
         return [
             'iso_alpha_2' => fake()->countryCode().rand(1, 9999),
-            'icao' => Str::upper(fake()->randomLetter(2)),
+            'icao' => Str::upper(fake()->randomLetter().fake()->randomLetter()),
             'iucn' => fake()->randomElements($this->regions)[0].' '.fake()->word(),
             'tdwg' => fake()->word(),
             'is_visible' => true,

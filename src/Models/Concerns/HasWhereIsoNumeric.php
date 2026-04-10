@@ -2,7 +2,8 @@
 
 namespace Lwwcas\LaravelCountries\Models\Concerns;
 
-use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 
 trait HasWhereIsoNumeric
 {
@@ -10,9 +11,11 @@ trait HasWhereIsoNumeric
      * Find a model by iso Numeric.
      *
      *
-     * @return Illuminate\Database\Eloquent\Collection
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
-    public function scopeWhereIsoNumeric($query, string $isoNumeric): Builder
+    #[Scope]
+    protected function whereIsoNumeric(Builder $query, string $isoNumeric): Builder
     {
         return $query->where('iso_numeric', $isoNumeric);
     }
@@ -21,9 +24,11 @@ trait HasWhereIsoNumeric
      * Filter the query by the ISO Numeric, or-ing the query when the builder
      * already has a where clause.
      *
-     * @param  Builder  $query
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
-    public function scopeOrWhereIsoNumeric($query, string $isoNumeric): Builder
+    #[Scope]
+    protected function orWhereIsoNumeric(Builder $query, string $isoNumeric): Builder
     {
         return $query->orWhere('iso_numeric', $isoNumeric);
     }

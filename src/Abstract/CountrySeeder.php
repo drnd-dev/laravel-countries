@@ -11,13 +11,13 @@ abstract class CountrySeeder extends Seeder implements CountrySeedInterface
      * Attribute that defines the language of the country.
      * Defaults to 'en' for English.
      */
-    public ?string $lang = 'en';
+    public string $lang = 'en';
 
     /**
      * Attribute that defines the region of the country.
      * Stores regional information like continent or geographical region.
      */
-    public ?string $region = null;
+    public string $region;
 
     /**
      * The common name of the country.
@@ -127,7 +127,7 @@ abstract class CountrySeeder extends Seeder implements CountrySeedInterface
      * The area of the country in square kilometers.
      * Example: 9833517 for United States.
      */
-    public ?int $area = null;
+    public ?float $area = null;
 
     /**
      * The capital city of the country.
@@ -157,7 +157,7 @@ abstract class CountrySeeder extends Seeder implements CountrySeedInterface
      * Gross Domestic Product (GDP) of the country in billions of USD.
      * Example: 21433 for United States.
      */
-    public ?int $gdp = null;
+    public ?float $gdp = null;
 
     /**
      * Array of major religions practiced in the country.

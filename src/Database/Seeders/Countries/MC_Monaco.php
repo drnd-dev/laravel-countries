@@ -10,19 +10,17 @@ class MC_Monaco extends CountrySeeder
     /**
      * Attribute that defines the language of countries
      */
-    public ?string $lang = 'en';
+    public string $lang = 'en';
 
     /**
      * Attribute that defines the language of countries
      */
-    public ?string $region = 'europe';
+    public string $region = 'europe';
 
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         // Set the country's common name
         $this->name = 'Monaco';
@@ -235,7 +233,7 @@ class MC_Monaco extends CountrySeeder
         Builder::country($this);
     }
 
-    public function geographical()
+    public function geographical(): string
     {
         return '{"type":"FeatureCollection","features":[{"type":"Feature","properties":{"cca2":"mc"},"geometry":{"type":"Polygon","coordinates":[[[7.439293,43.757523],[7.423055,43.739998],[7.4175,43.734161],[7.391609,43.727547],[7.386389,43.741943],[7.386389,43.745552],[7.387777,43.748604],[7.403055,43.761383],[7.416111,43.770554],[7.419999,43.772499],[7.424722,43.773048],[7.429444,43.771385],[7.4325,43.769165],[7.438333,43.760277],[7.439293,43.757523]]]}}]}';
     }

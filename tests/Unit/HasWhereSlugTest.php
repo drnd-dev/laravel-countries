@@ -17,7 +17,7 @@ it('should can filters countries by Slug', function () {
 
     CountryFactory::new()->count(5)->create();
 
-    $country = Country::whereSlug('brazil')->first();
+    $country = Country::query()->whereSlug('brazil')->first();
 
     expect($country)->toBeInstanceOf(Country::class);
     expect($country->slug)->toEqual('brazil');
@@ -44,14 +44,14 @@ it('should can filters countries by Slug on specific locale', function () {
     ]);
 
     App::setLocale('en');
-    $country = Country::whereSlug('brazil-en')->first();
+    $country = Country::query()->whereSlug('brazil-en')->first();
 
     expect($country)->toBeInstanceOf(Country::class);
     expect($country->slug)->toBeString();
     expect($country->slug)->toEqual('brazil-en');
 
     App::setLocale('it');
-    $country = Country::whereSlug('brazil-it')->first();
+    $country = Country::query()->whereSlug('brazil-it')->first();
 
     expect($country)->toBeInstanceOf(Country::class);
     expect($country->slug)->toBeString();
@@ -68,7 +68,7 @@ it('should can filters regions by Slug', function () {
 
     CountryRegionFactory::new()->count(5)->create();
 
-    $region = CountryRegion::whereSlug('europe')->first();
+    $region = CountryRegion::query()->whereSlug('europe')->first();
 
     expect($region)->toBeInstanceOf(CountryRegion::class);
     expect($region->slug)->toEqual('europe');
@@ -93,14 +93,14 @@ it('should can filters regions by Slug on specific locale', function () {
     ]);
 
     App::setLocale('en');
-    $region = CountryRegion::whereSlug('europe-en')->first();
+    $region = CountryRegion::query()->whereSlug('europe-en')->first();
 
     expect($region)->toBeInstanceOf(CountryRegion::class);
     expect($region->slug)->toBeString();
     expect($region->slug)->toEqual('europe-en');
 
     App::setLocale('it');
-    $region = CountryRegion::whereSlug('europe-en')->first();
+    $region = CountryRegion::query()->whereSlug('europe-en')->first();
 
     expect($region)->toBeInstanceOf(CountryRegion::class);
     expect($region->slug)->toBeString();

@@ -253,10 +253,8 @@ class LwwcasDatabaseSeeder extends Seeder
 {
     /**
      * Seed the application's database.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         // Regions Base
         $this->call(RegionsSeeder::class);

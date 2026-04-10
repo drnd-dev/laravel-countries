@@ -6,10 +6,8 @@ interface CountrySeedInterface
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run();
+    public function run(): void;
 
-    public function geographical();
+    public function geographical(): string;
 }

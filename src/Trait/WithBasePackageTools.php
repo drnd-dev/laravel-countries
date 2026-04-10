@@ -140,7 +140,7 @@ trait WithBasePackageTools
      */
     public function withEnd(): self
     {
-        if ($this->withEnd != null) {
+        if ($this->withEnd !== null) {
             $this->info($this->withEnd);
 
             return $this;
@@ -150,7 +150,9 @@ trait WithBasePackageTools
             $this->withEnd = $this->withRandomEnd[array_rand($this->withRandomEnd)];
         }
 
-        $this->info($this->withEnd);
+        if ($this->withEnd !== null) {
+            $this->info($this->withEnd);
+        }
 
         return $this;
     }

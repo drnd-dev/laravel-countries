@@ -3,13 +3,16 @@
 namespace Lwwcas\LaravelCountries\Models;
 
 use Astrotomic\Translatable\Translatable;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Concerns\HasAttributes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Lwwcas\LaravelCountries\Abstract\CountryModel;
+use Lwwcas\LaravelCountries\Database\Factories\CountryFactory;
 use Lwwcas\LaravelCountries\Models\Concerns\HasCountriesList;
 use Lwwcas\LaravelCountries\Models\Concerns\HasFlagColorsGetters;
 use Lwwcas\LaravelCountries\Models\Concerns\HasFlagEmojiGetters;
@@ -34,8 +37,56 @@ use Lwwcas\LaravelCountries\Models\Concerns\VisibleAttributes;
 use Lwwcas\LaravelCountries\Trait\WithCoordinatesBootstrap;
 use Lwwcas\LaravelCountries\Trait\WithFlagColorBootstrap;
 
+/**
+ * @property int $id
+ * @property int $lc_region_id
+ * @property string $uid
+ * @property string $official_name
+ * @property string|null $capital
+ * @property string $iso_alpha_2
+ * @property string $iso_alpha_3
+ * @property int|null $iso_numeric
+ * @property string|null $international_phone
+ * @property string|null $geoname_id
+ * @property string|null $wmo
+ * @property Carbon|null $independence_day
+ * @property string|null $population
+ * @property string|null $area
+ * @property string|null $gdp
+ * @property array|null $languages
+ * @property array|null $tld
+ * @property array|null $alternative_tld
+ * @property array|null $borders
+ * @property array|null $timezones
+ * @property array|null $currency
+ * @property array|null $flag_emoji
+ * @property array|null $flag_colors
+ * @property array|null $flag_colors_web
+ * @property array|null $flag_colors_contrast
+ * @property array|null $flag_colors_hex
+ * @property array|null $flag_colors_rgb
+ * @property array|null $flag_colors_cmyk
+ * @property array|null $flag_colors_hsl
+ * @property array|null $flag_colors_hsv
+ * @property array|null $flag_colors_pantone
+ * @property bool $is_visible
+ * @property Carbon $created_at
+ * @property Carbon|null $updated_at
+ * @property-read CountryRegion|null $region
+ * @property-read CountryGeographical|null $geographical
+ * @property-read CountryExtras|null $extras
+ * @property-read CountryCoordinates|null $coordinates
+ *
+ * @method static Builder<static> newModelQuery()
+ * @method static Builder<static> newQuery()
+ * @method static Builder<static> query()
+ * @method static CountryFactory factory(...$parameters)
+ *
+ * @mixin CountryModel
+ */
 class Country extends CountryModel
 {
+    /** @use HasFactory<CountryFactory> */
     use HasCountriesList,
         HasFactory,
         HasFlagColorsGetters,
@@ -62,7 +113,7 @@ class Country extends CountryModel
         WithCoordinatesBootstrap,
         WithFlagColorBootstrap;
 
-    public $translationModel = CountryTranslation::class;
+    public string $translationModel = CountryTranslation::class;
 
     /**
      * The table associated with the model.
@@ -71,19 +122,17 @@ class Country extends CountryModel
      */
     protected $table = 'lc_countries';
 
-    /* Mass Translatable Assignment */
-    public $translatedAttributes = [
+    public array $translatedAttributes = [
         'slug',
         'name',
     ];
 
-    /* Translatable ForeignKey */
-    public $translationForeignKey = 'lc_country_id';
+    public string $translationForeignKey = 'lc_country_id';
 
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var list<string>
      */
     protected $fillable = [
         'uid', // Unique identifier (ULID) for the country.
@@ -128,43 +177,10 @@ class Country extends CountryModel
     /**
      * The model's default values for attributes.
      *
-     * @var array
+     * @var array<string, mixed>
      */
     protected $attributes = [
         'is_visible' => true,
-    ];
-
-    /**
-     * The attributes that should be cast.
-     *
-     * This section is particularly important due to limitations introduced in Laravel 10.
-     * Laravel 10 requires specific handling of attributes to ensure proper type casting
-     * and avoid issues such as "Array to string conversion."
-     *
-     * @var array
-     */
-    protected $casts = [
-        'languages' => 'array',
-        'tld' => 'array',
-        'alternative_tld' => 'array',
-        'borders' => 'array',
-        'timezones' => 'array',
-        'currency' => 'array',
-
-        'flag_emoji' => 'array',
-        'flag_colors' => 'array',
-        'flag_colors_web' => 'array',
-        'flag_colors_contrast' => 'array',
-        'flag_colors_hex' => 'array',
-        'flag_colors_rgb' => 'array',
-        'flag_colors_cmyk' => 'array',
-        'flag_colors_hsl' => 'array',
-        'flag_colors_hsv' => 'array',
-        'flag_colors_pantone' => 'array',
-
-        'independence_day' => 'date:Y-m-d',
-
-        'is_visible' => 'boolean',
     ];
 
     /**
@@ -200,27 +216,22 @@ class Country extends CountryModel
     }
 
     /**
-     * The "booting" method of the model.
-     *
-     * @return void
+     * Create a new factory instance for the model.
      */
-    public static function boot()
+    public static function newFactory(): CountryFactory
     {
-        parent::boot();
-        self::creating(function ($model) {
+        return CountryFactory::new();
+    }
+
+    public static function booted(): void
+    {
+        self::creating(function (Country $model) {
             $model->uid = (string) Str::ulid();
         });
     }
 
-    /**
-     * Perform any actions required before the model boots.
-     *
-     * @return void
-     */
-    protected static function booting()
+    protected static function booting(): void
     {
-        parent::booting();
-
         // Applying a global scope to always filter countries where 'visible' is true
         static::addGlobalScope('is_visible', function (Builder $builder) {
             $builder->where('is_visible', true);
@@ -246,8 +257,6 @@ class Country extends CountryModel
      * Mutator for the iso_alpha_2 attribute.
      *
      * It ensures the ISO Alpha 2 code is always uppercased.
-     *
-     * @return HasAttributes
      */
     protected function isoAlpha2(): Attribute
     {
@@ -260,8 +269,6 @@ class Country extends CountryModel
      * Mutator for the iso_alpha_3 attribute.
      *
      * It ensures the ISO Alpha 3 code is always uppercased.
-     *
-     * @return HasAttributes
      */
     protected function isoAlpha3(): Attribute
     {
@@ -273,9 +280,9 @@ class Country extends CountryModel
     /**
      * Get the region that owns the Country
      *
-     * @return BelongsTo
+     * @return BelongsTo<CountryRegion, $this>
      */
-    public function region()
+    public function region(): BelongsTo
     {
         return $this->belongsTo(CountryRegion::class, 'lc_region_id');
     }
@@ -283,9 +290,9 @@ class Country extends CountryModel
     /**
      * Get the geographical data for the country.
      *
-     * @return Illuminate\Database\Eloquent\Relations\HasOne
+     * @return HasOne<CountryGeographical, $this>
      */
-    public function geographical()
+    public function geographical(): HasOne
     {
         return $this->hasOne(CountryGeographical::class, 'lc_country_id');
     }
@@ -293,9 +300,9 @@ class Country extends CountryModel
     /**
      * Get the extra data for the country.
      *
-     * @return Illuminate\Database\Eloquent\Relations\HasOne
+     * @return HasOne<CountryExtras, $this>
      */
-    public function extras()
+    public function extras(): HasOne
     {
         return $this->hasOne(CountryExtras::class, 'lc_country_id');
     }
@@ -303,9 +310,9 @@ class Country extends CountryModel
     /**
      * Get the coordinates for the country.
      *
-     * @return Illuminate\Database\Eloquent\Relations\HasOne
+     * @return HasOne<CountryCoordinates, $this>
      */
-    public function coordinates()
+    public function coordinates(): HasOne
     {
         return $this->hasOne(CountryCoordinates::class, 'lc_country_id');
     }
@@ -313,11 +320,11 @@ class Country extends CountryModel
     /**
      * Find a country by UIDs.
      *
-     * @param  Builder  $query
-     * @param  string  $uid
-     * @return Builder
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
-    public function scopeWhereUid($query, $uid)
+    #[Scope]
+    public function whereUid(Builder $query, string $uid): Builder
     {
         return $query->where('uid', $uid);
     }
@@ -325,11 +332,11 @@ class Country extends CountryModel
     /**
      * Find a country by UIDs or where the country's UIDs is a given value.
      *
-     * @param  Builder  $query
-     * @param  string  $uid
-     * @return Builder
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
-    public function scopeOrWhereUid($query, $uid)
+    #[Scope]
+    public function orWhereUid(Builder $query, string $uid): Builder
     {
         return $query->orWhere('uid', $uid);
     }
@@ -337,10 +344,11 @@ class Country extends CountryModel
     /**
      * Find a country by official name.
      *
-     * @param  string  $officialName
-     * @return Illuminate\Database\Eloquent\Collection
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
-    public function scopeWhereOficialName($query, $officialName)
+    #[Scope]
+    public function whereOficialName(Builder $query, string $officialName): Builder
     {
         return $query->where('official_name', $officialName);
     }
@@ -348,11 +356,11 @@ class Country extends CountryModel
     /**
      * Find a country by official name with OR operator.
      *
-     * @param  Builder  $query
-     * @param  string  $officialName
-     * @return Builder
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
-    public function scopeOrWhereOficialName($query, $officialName)
+    #[Scope]
+    public function orWhereOficialName(Builder $query, string $officialName): Builder
     {
         return $query->orWhere('official_name', $officialName);
     }
@@ -360,10 +368,11 @@ class Country extends CountryModel
     /**
      * Find a country by official name with LIKE condition.
      *
-     * @param  string  $officialName
-     * @return Illuminate\Database\Eloquent\Collection
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
-    public function scopeWhereOficialNameLike($query, $officialName)
+    #[Scope]
+    public function whereOficialNameLike(Builder $query, string $officialName): Builder
     {
         return $query->whereLike('official_name', '%'.$officialName.'%');
     }
@@ -371,11 +380,11 @@ class Country extends CountryModel
     /**
      * Find a country by official name with LIKE condition and OR operator.
      *
-     * @param  Builder  $query
-     * @param  string  $officialName
-     * @return Builder
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
-    public function scopeOrWhereOficialNameLike($query, $officialName)
+    #[Scope]
+    public function orWhereOficialNameLike(Builder $query, string $officialName): Builder
     {
         return $query->orWhereLike('official_name', '%'.$officialName.'%');
     }
@@ -383,10 +392,11 @@ class Country extends CountryModel
     /**
      * Find a country by Geoname ID.
      *
-     * @param  int  $geonameId
-     * @return Illuminate\Database\Eloquent\Collection
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
-    public function scopeWhereGeoname($query, $geonameId)
+    #[Scope]
+    public function whereGeoname(Builder $query, int $geonameId): Builder
     {
         return $query->where('geoname_id', $geonameId);
     }
@@ -394,23 +404,20 @@ class Country extends CountryModel
     /**
      * Find a country by Geoname ID with OR operator.
      *
-     * @param  Builder  $query
-     * @param  int  $geonameId
-     * @return Builder
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
-    public function scopeOrWhereGeoname($query, $geonameId)
+    #[Scope]
+    public function orWhereGeoname(Builder $query, int $geonameId): Builder
     {
         return $query->orWhere('geoname_id', $geonameId);
     }
 
     /**
      * Get the geographical data as a GeoJSON feature collection.
-     *
-     * @return array
      */
-    public function getGeoData()
+    public function getGeoData(): array
     {
-        return $this->geographical()->first()->getGeoData();
-
+        return $this->geographical()->first()?->getGeoData() ?? [];
     }
 }

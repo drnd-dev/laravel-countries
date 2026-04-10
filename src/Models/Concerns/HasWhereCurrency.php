@@ -2,17 +2,19 @@
 
 namespace Lwwcas\LaravelCountries\Models\Concerns;
 
-use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 
 trait HasWhereCurrency
 {
     /**
      * Filter countries by currency.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
-    public function scopeWhereCurrency($query, string $currency)
+    #[Scope]
+    protected function whereCurrency(Builder $query, string $currency): Builder
     {
         return $query->whereCurrencyCode($currency);
     }
@@ -20,22 +22,24 @@ trait HasWhereCurrency
     /**
      * Filter countries by an array of currencies.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  Builder<static>  $query
      * @param  string[]  $currencies
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder<static>
      */
-    public function scopeWhereCurrencies($query, array $currencies)
+    #[Scope]
+    protected function whereCurrencies(Builder $query, array $currencies): Builder
     {
-        $query->whereCurrencyCodes($currencies);
+        return $query->whereCurrencyCodes($currencies);
     }
 
     /**
      * Filter countries by currency code.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
-    public function scopeWhereCurrencyCode($query, string $currency)
+    #[Scope]
+    protected function whereCurrencyCode(Builder $query, string $currency): Builder
     {
         return $query->whereJsonContains('currency->code', $currency);
     }
@@ -43,11 +47,12 @@ trait HasWhereCurrency
     /**
      * Filter countries by an array of currencies code.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  Builder<static>  $query
      * @param  string[]  $currencies
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder<static>
      */
-    public function scopeWhereCurrencyCodes($query, array $currencies)
+    #[Scope]
+    protected function whereCurrencyCodes(Builder $query, array $currencies): Builder
     {
         return $query->where(function (Builder $query) use ($currencies) {
             foreach ($currencies as $code) {
@@ -59,10 +64,11 @@ trait HasWhereCurrency
     /**
      * Filter countries by currency name.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
-    public function scopeWhereCurrencyName($query, string $currency)
+    #[Scope]
+    protected function whereCurrencyName(Builder $query, string $currency): Builder
     {
         return $query->whereJsonContains('currency->name', $currency);
     }
@@ -70,11 +76,12 @@ trait HasWhereCurrency
     /**
      * Filter countries by an array of currencies name.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  Builder<static>  $query
      * @param  string[]  $currencies
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder<static>
      */
-    public function scopeWhereCurrencyNames($query, array $currencies)
+    #[Scope]
+    protected function whereCurrencyNames(Builder $query, array $currencies): Builder
     {
         return $query->where(function (Builder $query) use ($currencies) {
             foreach ($currencies as $name) {
@@ -85,15 +92,12 @@ trait HasWhereCurrency
 
     /**
      * Checks if the country has a currency defined.
+     *
+     * @phpstan-assert-if-true array $this->currency
      */
     public function hasCurrency(): bool
     {
-        return ! (
-            $this->currency == [] ||
-            $this->currency['code'] == '' ||
-            is_null($this->currency) ||
-            is_null($this->currency['code'])
-        );
+        return is_array($this->currency) && ! empty($this->currency['code']);
     }
 
     /**
@@ -101,11 +105,7 @@ trait HasWhereCurrency
      */
     public function hasCoinsCurrency(): bool
     {
-        return ! (
-            $this->hasCurrency() == false ||
-            $this->currency['coins'] == [] ||
-            is_null($this->currency['coins'])
-        );
+        return $this->hasCurrency() && is_array($this->currency['coins']) && ! empty($this->currency['coins']);
     }
 
     /**
@@ -113,12 +113,7 @@ trait HasWhereCurrency
      */
     public function hasSubCoinsCurrency(): bool
     {
-        return ! (
-            $this->hasCurrency() == false ||
-            $this->hasCoinsCurrency() == false ||
-            $this->currency['coins']['sub'] == [] ||
-            is_null($this->currency['coins']['sub'])
-        );
+        return $this->hasCoinsCurrency() && ! empty($this->currency['coins']['sub']);
     }
 
     /**
@@ -126,12 +121,7 @@ trait HasWhereCurrency
      */
     public function hasMainCoinsCurrency(): bool
     {
-        return ! (
-            $this->hasCurrency() == false ||
-            $this->hasCoinsCurrency() == false ||
-            $this->currency['coins']['main'] == [] ||
-            is_null($this->currency['coins']['main'])
-        );
+        return $this->hasCoinsCurrency() && ! empty($this->currency['coins']['main']);
     }
 
     /**
@@ -139,11 +129,7 @@ trait HasWhereCurrency
      */
     public function hasNotesCurrency(): bool
     {
-        return ! (
-            $this->hasCurrency() == false ||
-            $this->currency['banknotes'] == [] ||
-            is_null($this->currency['banknotes'])
-        );
+        return $this->hasCurrency() && ! empty($this->currency['banknotes']);
     }
 
     /**
@@ -172,12 +158,12 @@ trait HasWhereCurrency
             'unit' => [
                 'main' => $this->getCurrencyMainUnit() ?? null,
                 'sub' => $this->getCurrencySubUnit() ?? null,
-                'to_unit' => $this->getCurrencyUnitMainToSub() ?? null,
+                'to_unit' => $this->getCurrencyUnitMainToSub(),
             ],
-            'banknotes' => $this->getCurrencyNotes() ?? null,
+            'banknotes' => $this->getCurrencyNotes(),
             'coins' => [
-                'main' => $this->getCurrencyMainCoins() ?? null,
-                'sub' => $this->getCurrencySubCoins() ?? null,
+                'main' => $this->getCurrencyMainCoins(),
+                'sub' => $this->getCurrencySubCoins(),
             ],
         ];
     }

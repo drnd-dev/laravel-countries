@@ -2,17 +2,19 @@
 
 namespace Lwwcas\LaravelCountries\Models\Concerns;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 
 trait HasWherePhoneCode
 {
     /**
-     * Find a country by international phone.
+     * Find a country by international phone code.
      *
-     * @param  string  $internationalPhone
-     * @return Illuminate\Database\Eloquent\Collection
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
-    public function scopeWherePhoneCode($query, $internationalPhone)
+    #[Scope]
+    protected function wherePhoneCode(Builder $query, string $internationalPhone): Builder
     {
         return $query->where('international_phone', $internationalPhone);
     }
@@ -20,11 +22,11 @@ trait HasWherePhoneCode
     /**
      * Filter the query by the international phone code or the given value.
      *
-     * @param  Builder  $query
-     * @param  string  $internationalPhone
-     * @return Builder
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
-    public function scopeOrWherePhoneCode($query, $internationalPhone)
+    #[Scope]
+    protected function orWherePhoneCode(Builder $query, string $internationalPhone): Builder
     {
         return $query->orWhere('international_phone', $internationalPhone);
     }

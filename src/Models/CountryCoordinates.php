@@ -2,12 +2,33 @@
 
 namespace Lwwcas\LaravelCountries\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Lwwcas\LaravelCountries\Abstract\CountryModel;
+use Lwwcas\LaravelCountries\Database\Factories\CountryCoordinatesFactory;
 
+/**
+ * @property int $id
+ * @property int $lc_country_id
+ * @property string|null $latitude
+ * @property string|null $longitude
+ * @property string|null $degrees_with_decimal
+ * @property string|null $degrees_minutes_seconds
+ * @property string|null $degrees_and_decimal_minutes
+ * @property array|null $gps
+ * @property-read Country|null $country
+ *
+ * @method static Builder<static> newModelQuery()
+ * @method static Builder<static> newQuery()
+ * @method static Builder<static> query()
+ * @method static CountryCoordinatesFactory factory(...$parameters)
+ *
+ * @mixin CountryModel
+ */
 class CountryCoordinates extends CountryModel
 {
+    /** @use HasFactory<CountryCoordinatesFactory> */
     use HasFactory;
 
     /**
@@ -27,7 +48,7 @@ class CountryCoordinates extends CountryModel
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var list<string>
      */
     protected $fillable = [
         'lc_country_id',
@@ -40,17 +61,12 @@ class CountryCoordinates extends CountryModel
     ];
 
     /**
-     * The attributes that should be cast.
-     *
-     * This section is particularly important due to limitations introduced in Laravel 10.
-     * Laravel 10 requires specific handling of attributes to ensure proper type casting
-     * and avoid issues such as "Array to string conversion."
-     *
-     * @var array
+     * Create a new factory instance for the model.
      */
-    protected $casts = [
-        'gps' => 'array',
-    ];
+    public static function newFactory(): CountryCoordinatesFactory
+    {
+        return CountryCoordinatesFactory::new();
+    }
 
     /**
      * Get the attributes that should be cast.
@@ -66,6 +82,8 @@ class CountryCoordinates extends CountryModel
 
     /**
      * Get the country that owns the CountryCoordinates
+     *
+     * @return HasOne<Country, $this>
      */
     public function country(): HasOne
     {

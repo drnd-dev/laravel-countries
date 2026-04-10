@@ -2,15 +2,19 @@
 
 namespace Lwwcas\LaravelCountries\Models\Concerns;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
+
 trait HasWhereIndependenceDay
 {
     /**
      * Filter the query by independence day.
      *
-     * @param  Builder  $query
-     * @return Builder
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
-    public function scopeWhereIndependenceDay($query, string $date)
+    #[Scope]
+    protected function whereIndependenceDay(Builder $query, string $date): Builder
     {
         return $query->whereNotNull('independence_day')->whereDate('independence_day', $date);
     }
@@ -18,10 +22,11 @@ trait HasWhereIndependenceDay
     /**
      * Filter the query by independence year.
      *
-     * @param  Builder  $query
-     * @return Builder
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
-    public function scopeWhereIndependenceYear($query, int $year)
+    #[Scope]
+    protected function whereIndependenceYear(Builder $query, int $year): Builder
     {
         return $query->whereNotNull('independence_day')->whereYear('independence_day', $year);
     }
@@ -29,12 +34,11 @@ trait HasWhereIndependenceDay
     /**
      * Filter the query by independence dates between two dates.
      *
-     * @param  Builder  $query
-     * @param  string  $startDate
-     * @param  string  $endDate
-     * @return Builder
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
-    public function scopeWhereIndependenceBetweenDates($query, $startDate, $endDate)
+    #[Scope]
+    protected function whereIndependenceBetweenDates(Builder $query, string $startDate, string $endDate): Builder
     {
         return $query->whereNotNull('independence_day')
             ->whereBetween('independence_day', [$startDate, $endDate]);
@@ -43,10 +47,11 @@ trait HasWhereIndependenceDay
     /**
      * Filter the query by independence month.
      *
-     * @param  Builder  $query
-     * @return Builder
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
-    public function scopeWhereIndependenceMonth($query, int $month)
+    #[Scope]
+    protected function whereIndependenceMonth(Builder $query, int $month): Builder
     {
         return $query->whereNotNull('independence_day')->whereMonth('independence_day', $month);
     }
@@ -54,10 +59,11 @@ trait HasWhereIndependenceDay
     /**
      * Filter the query by independence dates before a certain date.
      *
-     * @param  Builder  $query
-     * @return Builder
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
-    public function scopeWhereIndependenceBefore($query, string $date)
+    #[Scope]
+    protected function whereIndependenceBefore(Builder $query, string $date): Builder
     {
         return $query->whereNotNull('independence_day')->where('independence_day', '<', $date);
     }
@@ -65,10 +71,11 @@ trait HasWhereIndependenceDay
     /**
      * Filter the query by independence dates after a certain date.
      *
-     * @param  Builder  $query
-     * @return Builder
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
-    public function scopeWhereIndependenceAfter($query, string $date)
+    #[Scope]
+    protected function whereIndependenceAfter(Builder $query, string $date): Builder
     {
         return $query->whereNotNull('independence_day')->where('independence_day', '>', $date);
     }

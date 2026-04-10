@@ -8,10 +8,8 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('lc_countries', function (Blueprint $table) {
             $table->increments('id')->comment('Primary key: auto-incremented country ID.');
@@ -54,18 +52,16 @@ return new class extends Migration
             $table->boolean('is_visible')->default(true)->comment('Visibility flag to determine if the country is publicly visible.');
             $table->timestamps();
 
-            $table->unique(['lc_region_id', 'iso_alpha_2'])->comment('Unique constraint to ensure no duplicate ISO alpha-2 codes within the same region.');
-            $table->foreign('lc_region_id')->references('id')->on('lc_regions')->onDelete('cascade')->comment('Foreign key constraint linking to the region table, with cascading deletes.');
+            $table->unique(['lc_region_id', 'iso_alpha_2']);
+            $table->foreign('lc_region_id')->references('id')->on('lc_regions')->onDelete('cascade');
         });
 
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('lc_countries');
     }

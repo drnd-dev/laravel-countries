@@ -17,10 +17,8 @@ class LanguagesSeeder extends Seeder
 {
     /**
      * Seed the application's database.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         // Add all countries translations
         $this->call(Portuguese::class);

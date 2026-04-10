@@ -9,10 +9,13 @@ trait HasVisibleGlobalScope
     /**
      * Retrieve a query builder without applying the 'visible' global scope.
      *
-     * @return Builder
+     * @return Builder<static>
      */
-    public static function withNotVisible()
+    public static function withNotVisible(): Builder
     {
-        return static::withoutGlobalScope('is_visible');
+        /** @var Builder<static> $query */
+        $query = static::withoutGlobalScope('is_visible');
+
+        return $query;
     }
 }

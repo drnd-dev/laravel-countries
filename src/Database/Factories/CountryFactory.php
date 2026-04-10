@@ -6,14 +6,17 @@ use App\Models\Model;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use Lwwcas\LaravelCountries\Models\Country;
+use Lwwcas\LaravelCountries\Models\CountryRegion;
 
 /**
- * @extends Factory<Model>
+ * @extends Factory<Country>
  */
 class CountryFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
+     *
+     * @var class-string<Country>
      */
     protected $model = Country::class;
 
@@ -28,7 +31,7 @@ class CountryFactory extends Factory
         $colors = $this->randomColors();
 
         return [
-            'lc_region_id' => CountryRegionFactory::new()->create()->id,
+            'lc_region_id' => CountryRegion::factory(),
             'uid' => fake()->unixTime(),
 
             'official_name' => Str::title($name),
@@ -105,7 +108,7 @@ class CountryFactory extends Factory
      *
      * @return string[]
      */
-    protected function randomLanguages()
+    protected function randomLanguages(): array
     {
         $rand = fake()->randomDigit();
         if ($rand === 0) {
@@ -132,7 +135,7 @@ class CountryFactory extends Factory
      *
      * @return string[]
      */
-    protected function randomLtd()
+    protected function randomLtd(): array
     {
         $rand = fake()->randomDigit();
         if ($rand === 0) {

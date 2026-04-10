@@ -2,7 +2,8 @@
 
 namespace Lwwcas\LaravelCountries\Models\Concerns;
 
-use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 
 trait HasWhereDomain
@@ -10,10 +11,11 @@ trait HasWhereDomain
     /**
      * Find a country by domain (TLD).
      *
-     * @param  string  $domain
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
-    public function scopeWhereDomain($query, $domain)
+    #[Scope]
+    protected function whereDomain(Builder $query, string $domain): Builder
     {
         $domainInLowercase = Str::lower($domain);
 
@@ -23,13 +25,14 @@ trait HasWhereDomain
     /**
      * Find a country by multiple domains (TLD).
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  Builder<static>  $query
      * @param  string[]  $domains
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder<static>
      */
-    public function scopeWhereDomains($query, array $domains)
+    #[Scope]
+    protected function whereDomains(Builder $query, array $domains): Builder
     {
-        $domainsInLowercase = array_map(fn ($lang) => Str::lower($lang), $domains);
+        $domainsInLowercase = array_map(fn (string $domain) => Str::lower($domain), $domains);
 
         return $query->where(function (Builder $query) use ($domainsInLowercase) {
             foreach ($domainsInLowercase as $domain) {
@@ -41,10 +44,11 @@ trait HasWhereDomain
     /**
      * Find a country by alternative domain (TLD).
      *
-     * @param  string  $domain
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
-    public function scopeWhereDomainAlternative($query, $domain)
+    #[Scope]
+    protected function whereDomainAlternative(Builder $query, string $domain): Builder
     {
         $domainInLowercase = Str::lower($domain);
 
@@ -54,13 +58,14 @@ trait HasWhereDomain
     /**
      * Find a country by multiple alternative domains (TLD).
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  Builder<static>  $query
      * @param  string[]  $domains
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder<static>
      */
-    public function scopeWhereDomainsAlternative($query, array $domains)
+    #[Scope]
+    protected function whereDomainsAlternative(Builder $query, array $domains): Builder
     {
-        $domainsInLowercase = array_map(fn ($lang) => Str::lower($lang), $domains);
+        $domainsInLowercase = array_map(fn (string $domain) => Str::lower($domain), $domains);
 
         return $query->where(function (Builder $query) use ($domainsInLowercase) {
             foreach ($domainsInLowercase as $domain) {

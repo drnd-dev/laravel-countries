@@ -2,7 +2,8 @@
 
 namespace Lwwcas\LaravelCountries\Models\Concerns;
 
-use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 
 trait HasWhereLanguages
@@ -10,10 +11,11 @@ trait HasWhereLanguages
     /**
      * Find a country by language.
      *
-     *
-     * @return Illuminate\Database\Eloquent\Builder
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
-    public function scopeWhereLanguage($query, string $language)
+    #[Scope]
+    protected function whereLanguage(Builder $query, string $language): Builder
     {
         $languageInLowercase = Str::lower($language);
 
@@ -21,14 +23,16 @@ trait HasWhereLanguages
     }
 
     /**
-     * Find a country by language.
+     * Find a country by multiple languages.
      *
-     *
-     * @return Illuminate\Database\Eloquent\Builder
+     * @param  Builder<static>  $query
+     * @param  string[]  $languages
+     * @return Builder<static>
      */
-    public function scopeWhereLanguages($query, array $languages)
+    #[Scope]
+    protected function whereLanguages(Builder $query, array $languages): Builder
     {
-        $languagesInLowercase = array_map(fn ($lang) => Str::lower($lang), $languages);
+        $languagesInLowercase = array_map(fn (string $lang) => Str::lower($lang), $languages);
 
         return $query->where(function (Builder $query) use ($languagesInLowercase) {
             foreach ($languagesInLowercase as $language) {

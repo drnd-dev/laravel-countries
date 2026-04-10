@@ -4,17 +4,18 @@ namespace Lwwcas\LaravelCountries\Database\Factories;
 
 use App\Models\Model;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Lwwcas\LaravelCountries\Models\Country;
 use Lwwcas\LaravelCountries\Models\CountryGeographical;
 
 /**
- * @extends Factory<Model>
+ * @extends Factory<CountryGeographical>
  */
 class CountryGeographicalFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
-     * @var class-string<\Illuminate\Database\Eloquent\Model>
+     * @var class-string<CountryGeographical>
      */
     protected $model = CountryGeographical::class;
 
@@ -25,9 +26,8 @@ class CountryGeographicalFactory extends Factory
      */
     public function definition(): array
     {
-
         return [
-            'lc_country_id' => CountryFactory::new()->create()->id,
+            'lc_country_id' => Country::factory(),
             'type' => 'FeatureCollection',
             'features_type' => 'Feature',
             'properties' => '{"cca2": "{'.fake()->languageCode().'}"}',

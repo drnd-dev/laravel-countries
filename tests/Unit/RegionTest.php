@@ -21,7 +21,7 @@ it('should filters region by icao', function () {
     ]);
     CountryRegionFactory::new()->count(10)->create();
 
-    $region = CountryRegion::WhereICAO('AFI')->first();
+    $region = CountryRegion::query()->whereICAO('AFI')->first();
 
     expect($region)->toBeInstanceOf(CountryRegion::class);
     expect($region->icao)->toEqual('AFI');
@@ -33,7 +33,7 @@ it('should filters region by iucn', function () {
     ]);
     CountryRegionFactory::new()->count(10)->create();
 
-    $region = CountryRegion::whereIUCN('Oceania')->first();
+    $region = CountryRegion::query()->whereIUCN('Oceania')->first();
 
     expect($region)->toBeInstanceOf(CountryRegion::class);
     expect($region->iucn)->toEqual('Oceania');
@@ -45,7 +45,7 @@ it('should filters region by tdwg', function () {
     ]);
     CountryRegionFactory::new()->count(10)->create();
 
-    $region = CountryRegion::whereTDWG('OCN')->first();
+    $region = CountryRegion::query()->whereTDWG('OCN')->first();
 
     expect($region)->toBeInstanceOf(CountryRegion::class);
     expect($region->tdwg)->toEqual('OCN');

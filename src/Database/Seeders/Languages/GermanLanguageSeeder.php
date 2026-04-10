@@ -9,17 +9,13 @@ class GermanLanguageSeeder extends Seeder
 {
     /**
      * Attribute that defines the language of countries
-     *
-     * @var string
      */
-    protected $lang = 'de';
+    protected string $lang = 'de';
 
     /**
      * Attribute that defines regions
-     *
-     * @var array
      */
-    protected $regions = [
+    protected array $regions = [
         'africa' => 'Afrika',
         'americas' => 'Amerikas',
         'asia' => 'Asien',
@@ -29,16 +25,14 @@ class GermanLanguageSeeder extends Seeder
 
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         Builder::regionsTranslations($this->regions, $this->lang);
         Builder::countriesTranslations($this->countries(), $this->lang);
     }
 
-    public function countries()
+    public function countries(): array
     {
         return [
             'AD' => 'Andorra',

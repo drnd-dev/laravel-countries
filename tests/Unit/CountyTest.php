@@ -59,11 +59,11 @@ it('should filters country by uid code', function () {
     $uid = '01J93N4EWBCTT28ARTWZEFBTS1';
 
     CountryFactory::new()->count(11)->create();
-    $country = Country::inRandomOrder()->first();
+    $country = Country::query()->inRandomOrder()->first();
     $country->uid = $uid;
     $country->save();
 
-    $country = Country::whereUid($uid)->first();
+    $country = Country::query()->whereUid($uid)->first();
 
     expect($country)->toBeInstanceOf(Country::class);
     expect($country->uid)->toBeString();
@@ -77,7 +77,7 @@ it('should filters countries by Oficial Name', function () {
     ]);
     CountryFactory::new()->count(5)->create();
 
-    $country = Country::whereOficialName($oficialName)->first();
+    $country = Country::query()->whereOficialName($oficialName)->first();
 
     expect($country)->toBeInstanceOf(Country::class);
     expect($country->official_name)->toEqual($oficialName);
@@ -91,12 +91,12 @@ it('should filters countries by geoname_id', function () {
     ]);
     CountryFactory::new()->count(10)->create();
 
-    $country = Country::whereGeoname('4031074')->first();
+    $country = Country::query()->whereGeoname('4031074')->first();
     expect($country)->toBeInstanceOf(Country::class);
     expect($country->official_name)->toEqual('United States of America');
     expect($country->geoname_id)->toEqual('4031074');
 
-    $country = Country::whereGeoname(4031074)->first();
+    $country = Country::query()->whereGeoname(4031074)->first();
     expect($country)->toBeInstanceOf(Country::class);
     expect($country->official_name)->toEqual('United States of America');
     expect($country->geoname_id)->toEqual('4031074');

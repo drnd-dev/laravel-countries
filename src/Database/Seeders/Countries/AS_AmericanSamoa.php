@@ -10,19 +10,17 @@ class AS_AmericanSamoa extends CountrySeeder
     /**
      * Attribute that defines the language of countries
      */
-    public ?string $lang = 'en';
+    public string $lang = 'en';
 
     /**
      * Attribute that defines the language of countries
      */
-    public ?string $region = 'oceania';
+    public string $region = 'oceania';
 
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         // Set the country's common name
         $this->name = 'American Samoa';
@@ -281,7 +279,7 @@ class AS_AmericanSamoa extends CountrySeeder
         Builder::country($this);
     }
 
-    public function geographical()
+    public function geographical(): string
     {
         return '{
   "type": "FeatureCollection",

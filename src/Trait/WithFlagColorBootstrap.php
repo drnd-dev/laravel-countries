@@ -12,7 +12,7 @@ trait WithFlagColorBootstrap
      * The direction can be 'top', 'bottom', 'left', 'right', or 'random'. If 'random'
      * is given, a random direction will be chosen from the predefined directions.
      *
-     * @param  string  $startsOn  The direction string.
+     * @param  string|null  $startsOn  The direction string.
      * @return string The gradient direction in degrees.
      */
     protected function getGradientDirection(?string $startsOn = null): string
@@ -24,6 +24,8 @@ trait WithFlagColorBootstrap
             'left' => '90deg',
             'right' => '270deg',
         ];
+
+        $startsOn ??= 'random';
 
         $direction = $gradientDirections['left'];
         if (array_key_exists($startsOn, $gradientDirections)) {
@@ -41,7 +43,7 @@ trait WithFlagColorBootstrap
     /**
      * Generate a CSS linear gradient string from the country's flag colors.
      *
-     * @param  string  $startsOn  The direction of the stripes. Can be 'top', 'bottom', 'left', 'right', or 'random'.
+     * @param  string|null  $startsOn  The direction of the stripes. Can be 'top', 'bottom', 'left', 'right', or 'random'.
      * @return string|null The CSS gradient string or null if no colors are set.
      */
     public function getFlagGradient(?string $startsOn = null): ?string
@@ -61,7 +63,7 @@ trait WithFlagColorBootstrap
      * Generate a CSS linear gradient string from the combined flag colors of two countries.
      *
      * @param  Country  $otherCountry  The other country to combine with.
-     * @param  string  $startsOn  The direction of the stripes. Can be 'top', 'bottom', 'left', 'right', or 'random'.
+     * @param  string|null  $startsOn  The direction of the stripes. Can be 'top', 'bottom', 'left', 'right', or 'random'.
      * @return string|null The CSS gradient string or null if no colors are set.
      */
     public function getCombinedFlagGradient(Country $otherCountry, ?string $startsOn = null): ?string

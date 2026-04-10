@@ -9,10 +9,13 @@ trait HasTranslationGlobalScope
     /**
      * Retrieve a query builder without applying the 'translation' global scope.
      *
-     * @return Builder
+     * @return Builder<static>
      */
-    public static function withNotTranslation()
+    public static function withNotTranslation(): Builder
     {
-        return static::withoutGlobalScope('translation');
+        /** @var Builder<static> $query */
+        $query = static::withoutGlobalScope('translation');
+
+        return $query;
     }
 }

@@ -3,10 +3,13 @@
 namespace Lwwcas\LaravelCountries\Models;
 
 use Astrotomic\Translatable\Translatable;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Lwwcas\LaravelCountries\Abstract\CountryModel;
+use Lwwcas\LaravelCountries\Database\Factories\CountryRegionFactory;
 use Lwwcas\LaravelCountries\Models\Concerns\HasTranslationGlobalScope;
 use Lwwcas\LaravelCountries\Models\Concerns\HasVisibleGlobalScope;
 use Lwwcas\LaravelCountries\Models\Concerns\HasWhereIso;
@@ -15,8 +18,52 @@ use Lwwcas\LaravelCountries\Models\Concerns\HasWhereName;
 use Lwwcas\LaravelCountries\Models\Concerns\HasWhereSlug;
 use Lwwcas\LaravelCountries\Models\Concerns\VisibleAttributes;
 
+/**
+ * @property int $id
+ * @property string $iso_alpha_2
+ * @property string $icao
+ * @property string $iucn
+ * @property string $tdwg
+ * @property bool $is_visible
+ * @property-read Collection<int, Country> $countries
+ *
+ * @method static Builder<static> newModelQuery()
+ * @method static Builder<static> newQuery()
+ * @method static Builder<static> query()
+ * @method static CountryRegionFactory factory(...$parameters)
+ * @method static Builder<static>|CountryRegion listsTranslations(string $translationField)
+ * @method static Builder<static>|CountryRegion notTranslatedIn(?string $locale = null)
+ * @method static Builder<static>|CountryRegion orWhereTranslation(string $translationField, $value, ?string $locale = null)
+ * @method static Builder<static>|CountryRegion orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static Builder<static>|CountryRegion orderByTranslation(string $translationField, string $sortMethod = 'asc')
+ * @method static Builder<static>|CountryRegion translated()
+ * @method static Builder<static>|CountryRegion translatedIn(?string $locale = null)
+ * @method static Builder<static>|CountryRegion whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
+ * @method static Builder<static>|CountryRegion whereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static Builder<static>|CountryRegion withTranslation(?string $locale = null)
+ * @method static Builder<static>|CountryRegion whereICAO(string $icao)
+ * @method static Builder<static>|CountryRegion orWhereICAO(string $icao)
+ * @method static Builder<static>|CountryRegion whereIUCN(string $iucn)
+ * @method static Builder<static>|CountryRegion orWhereIUCN(string $iucn)
+ * @method static Builder<static>|CountryRegion whereTDWG(string $tdwg)
+ * @method static Builder<static>|CountryRegion orWhereTDWG(string $tdwg)
+ * @method static Builder<static>|CountryRegion whereIso(string $iso)
+ * @method static Builder<static>|CountryRegion orWhereIso(string $iso)
+ * @method static Builder<static>|CountryRegion whereIsoAlpha2(string $isoAlpha2)
+ * @method static Builder<static>|CountryRegion orWhereIsoAlpha2(string $isoAlpha2)
+ * @method static Builder<static>|CountryRegion whereName(string $name)
+ * @method static Builder<static>|CountryRegion orWhereName(string $name)
+ * @method static Builder<static>|CountryRegion whereNameLike(string $name)
+ * @method static Builder<static>|CountryRegion orWhereNameLike(string $name)
+ * @method static Builder<static>|CountryRegion orderByName(string $sortMethod = 'asc')
+ * @method static Builder<static>|CountryRegion whereSlug(string $slug)
+ * @method static Builder<static>|CountryRegion orWhereSlug(string $slug)
+ *
+ * @mixin CountryModel
+ */
 class CountryRegion extends CountryModel
 {
+    /** @use HasFactory<CountryRegionFactory> */
     use HasFactory,
         HasTranslationGlobalScope,
         HasVisibleGlobalScope,
@@ -27,7 +74,7 @@ class CountryRegion extends CountryModel
         Translatable,
         VisibleAttributes;
 
-    public $translationModel = CountryRegionTranslation::class;
+    public string $translationModel = CountryRegionTranslation::class;
 
     /**
      * The table associated with the model.
@@ -37,13 +84,13 @@ class CountryRegion extends CountryModel
     protected $table = 'lc_regions';
 
     /* Mass Translatable Assignment */
-    public $translatedAttributes = [
+    public array $translatedAttributes = [
         'slug',
         'name',
     ];
 
     /* Translatable ForeignKey */
-    public $translationForeignKey = 'lc_region_id';
+    public string $translationForeignKey = 'lc_region_id';
 
     /**
      * Indicates if the model should be timestamped.
@@ -55,7 +102,7 @@ class CountryRegion extends CountryModel
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var list<string>
      */
     protected $fillable = [
         'iso_alpha_2', // The ISO 3166-1 alpha-2 region code (e.g., "US" for United States).
@@ -68,24 +115,19 @@ class CountryRegion extends CountryModel
     /**
      * The model's default values for attributes.
      *
-     * @var array
+     * @var array<string, mixed>
      */
     protected $attributes = [
         'is_visible' => true,
     ];
 
     /**
-     * The attributes that should be cast.
-     *
-     * This section is particularly important due to limitations introduced in Laravel 10.
-     * Laravel 10 requires specific handling of attributes to ensure proper type casting
-     * and avoid issues such as "Array to string conversion."
-     *
-     * @var array
+     * Create a new factory instance for the model.
      */
-    protected $casts = [
-        'is_visible' => 'boolean',
-    ];
+    public static function newFactory(): CountryRegionFactory
+    {
+        return CountryRegionFactory::new();
+    }
 
     /**
      * Get the attributes that should be cast.
@@ -101,13 +143,9 @@ class CountryRegion extends CountryModel
 
     /**
      * Perform any actions required before the model boots.
-     *
-     * @return void
      */
-    protected static function booting()
+    protected static function booting(): void
     {
-        parent::booting();
-
         // Applying a global scope to always filter countries where 'is_visible' is true
         static::addGlobalScope('is_visible', function (Builder $builder) {
             $builder->where('is_visible', true);
@@ -122,9 +160,9 @@ class CountryRegion extends CountryModel
     /**
      * Get the countries that are located in this region.
      *
-     * @return HasMany
+     * @return HasMany<Country, $this>
      */
-    public function countries()
+    public function countries(): HasMany
     {
         return $this->hasMany(Country::class, 'lc_region_id');
     }
@@ -132,10 +170,11 @@ class CountryRegion extends CountryModel
     /**
      * Filter the query by the ICAO (International Civil Aviation Organization) region code
      *
-     * @param  Builder  $query
-     * @return Builder
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
-    public function scopeWhereICAO($query, string $icao)
+    #[Scope]
+    public function whereICAO(Builder $query, string $icao): Builder
     {
         return $query->where('icao', $icao);
     }
@@ -143,10 +182,11 @@ class CountryRegion extends CountryModel
     /**
      * Filter the query by the ICAO (International Civil Aviation Organization) region code, adding the filter with an "or where" clause
      *
-     * @param  Builder  $query
-     * @return Builder
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
-    public function scopeOrWhereICAO($query, string $icao)
+    #[Scope]
+    public function orWhereICAO(Builder $query, string $icao): Builder
     {
         return $query->orWhere('icao', $icao);
     }
@@ -154,10 +194,11 @@ class CountryRegion extends CountryModel
     /**
      * Filter the query by the IUCN (International Union for Conservation of Nature) region code
      *
-     * @param  Builder  $query
-     * @return Builder
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
-    public function scopeWhereIUCN($query, string $iucn)
+    #[Scope]
+    public function whereIUCN(Builder $query, string $iucn): Builder
     {
         return $query->where('iucn', $iucn);
     }
@@ -165,10 +206,11 @@ class CountryRegion extends CountryModel
     /**
      * Filter the query by the IUCN (International Union for Conservation of Nature) region code, adding the filter with an "or where" clause
      *
-     * @param  Builder  $query
-     * @return Builder
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
-    public function scopeOrWhereIUCN($query, string $iucn)
+    #[Scope]
+    public function orWhereIUCN(Builder $query, string $iucn): Builder
     {
         return $query->orWhere('iucn', $iucn);
     }
@@ -176,10 +218,11 @@ class CountryRegion extends CountryModel
     /**
      * Filter the query by the TDWG (Taxonomic Databases Working Group) region code
      *
-     * @param  Builder  $query
-     * @return Builder
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
-    public function scopeWhereTDWG($query, string $tdwg)
+    #[Scope]
+    public function whereTDWG(Builder $query, string $tdwg): Builder
     {
         return $query->where('tdwg', $tdwg);
     }
@@ -187,10 +230,11 @@ class CountryRegion extends CountryModel
     /**
      * Filter the query by the TDWG (Taxonomic Databases Working Group) region code, adding the filter with an "or where" clause
      *
-     * @param  Builder  $query
-     * @return Builder
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
-    public function scopeOrWhereTDWG($query, string $tdwg)
+    #[Scope]
+    public function orWhereTDWG(Builder $query, string $tdwg): Builder
     {
         return $query->orWhere('tdwg', $tdwg);
     }

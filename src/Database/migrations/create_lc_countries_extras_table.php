@@ -8,10 +8,8 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('lc_countries_extras', function (Blueprint $table) {
             $table->increments('id')->comment('Primary key: auto-incremented extra information ID.');
@@ -26,17 +24,15 @@ return new class extends Migration
             $table->json('religions')->nullable()->comment('A list of religions practiced in the country.');
             $table->json('international_organizations')->nullable()->comment('A list of international organizations the country is a member of (e.g., UN, WTO).');
 
-            $table->foreign('lc_country_id')->references('id')->on('lc_countries')->onDelete('cascade')->comment('Foreign key constraint linking to the lc_countries table with cascading deletes.');
+            $table->foreign('lc_country_id')->references('id')->on('lc_countries')->onDelete('cascade');
         });
 
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('lc_countries_extras');
     }

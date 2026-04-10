@@ -10,19 +10,17 @@ class VA_VaticanCity extends CountrySeeder
     /**
      * Attribute that defines the language of countries
      */
-    public ?string $lang = 'en';
+    public string $lang = 'en';
 
     /**
      * Attribute that defines the language of countries
      */
-    public ?string $region = 'europe';
+    public string $region = 'europe';
 
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         // Set the country's common name
         $this->name = 'Vatican City';
@@ -233,7 +231,7 @@ class VA_VaticanCity extends CountrySeeder
         Builder::country($this);
     }
 
-    public function geographical()
+    public function geographical(): string
     {
         return '{"type":"FeatureCollection","features":[{"type":"Feature","properties":{"cca2":"va"},"geometry":{"type":"Polygon","coordinates":[[[12.445090330889,41.903117521785],[12.451653339581,41.907989033391],[12.456660170954,41.901426024699],[12.445090330889,41.903117521785]]]}}]}';
     }

@@ -2,17 +2,19 @@
 
 namespace Lwwcas\LaravelCountries\Models\Concerns;
 
-use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 
 trait HasWhereName
 {
     /**
      * Find a model by name.
      *
-     *
-     * @return Illuminate\Database\Eloquent\Collection
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
-    public function scopeWhereName($query, string $name): Builder
+    #[Scope]
+    protected function whereName(Builder $query, string $name): Builder
     {
         $query->whereTranslation('name', $name);
 
@@ -22,10 +24,11 @@ trait HasWhereName
     /**
      * Find a model by name with OR condition.
      *
-     *
-     * @return Illuminate\Database\Eloquent\Collection
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
-    public function scopeOrWhereName($query, string $name): Builder
+    #[Scope]
+    protected function orWhereName(Builder $query, string $name): Builder
     {
         $query->orWhereTranslation('name', $name);
 
@@ -35,10 +38,11 @@ trait HasWhereName
     /**
      * Find a model by name with LIKE condition.
      *
-     *
-     * @return Illuminate\Database\Eloquent\Collection
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
-    public function scopeWhereNameLike($query, string $name): Builder
+    #[Scope]
+    protected function whereNameLike(Builder $query, string $name): Builder
     {
         $query->whereTranslationLike('name', '% '.$name.'%');
 
@@ -48,10 +52,11 @@ trait HasWhereName
     /**
      * Find a model by name with LIKE condition and OR operator.
      *
-     *
-     * @return Illuminate\Database\Eloquent\Collection
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
-    public function scopeOrWhereNameLike($query, string $name): Builder
+    #[Scope]
+    protected function orWhereNameLike(Builder $query, string $name): Builder
     {
         $query->orWhereTranslationLike('name', '% '.$name.'%');
 
@@ -61,10 +66,11 @@ trait HasWhereName
     /**
      * Sort the query by name.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
-    public function scopeOrderByName($query, string $sortMethod = 'asc')
+    #[Scope]
+    protected function orderByName(Builder $query, string $sortMethod = 'asc'): Builder
     {
         return $query->orderByTranslation('name', $sortMethod);
     }

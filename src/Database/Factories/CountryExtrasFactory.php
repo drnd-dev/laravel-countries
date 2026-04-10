@@ -4,17 +4,18 @@ namespace Lwwcas\LaravelCountries\Database\Factories;
 
 use App\Models\Model;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Lwwcas\LaravelCountries\Models\Country;
 use Lwwcas\LaravelCountries\Models\CountryExtras;
 
 /**
- * @extends Factory<Model>
+ * @extends Factory<CountryExtras>
  */
 class CountryExtrasFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
-     * @var class-string<\Illuminate\Database\Eloquent\Model>
+     * @var class-string<CountryExtras>
      */
     protected $model = CountryExtras::class;
 
@@ -25,9 +26,8 @@ class CountryExtrasFactory extends Factory
      */
     public function definition(): array
     {
-
         return [
-            'lc_country_id' => CountryFactory::new()->create()->id,
+            'lc_country_id' => Country::factory(),
             'national_sport' => fake()->word(),
             'cybersecurity_agency' => fake()->word(),
 

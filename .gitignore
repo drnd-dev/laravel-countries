@@ -6,6 +6,7 @@ composer.lock
 vendor
 coverage
 node_modules
+.phpunit.result.cache
 
 .vitepress/cache/
 .vitepress/dist/

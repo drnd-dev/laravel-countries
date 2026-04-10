@@ -10,19 +10,17 @@ class MF_SaintMartin extends CountrySeeder
     /**
      * Attribute that defines the language of countries
      */
-    public ?string $lang = 'en';
+    public string $lang = 'en';
 
     /**
      * Attribute that defines the language of countries
      */
-    public ?string $region = 'americas';
+    public string $region = 'americas';
 
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         // Set the country's common name
         $this->name = 'Saint Martin';
@@ -251,7 +249,7 @@ class MF_SaintMartin extends CountrySeeder
         Builder::country($this);
     }
 
-    public function geographical()
+    public function geographical(): string
     {
         return '{"type":"FeatureCollection","features":[{"type":"Feature","properties":{"cca2":"mf"},"geometry":{"type":"Polygon","coordinates":[[[-63.00667,18.080555],[-63.01146,18.06728],[-63.030273,18.07037],[-63.109867,18.066116],[-63.139839,18.058601],[-63.14389,18.06194],[-63.14612,18.066387],[-63.14667,18.071941],[-63.142227,18.074165],[-63.045006,18.121387],[-63.03917,18.121944],[-63.01917,18.117775],[-63.016113,18.11389],[-63.006393,18.086941],[-63.00667,18.080555]]]}}]}';
     }

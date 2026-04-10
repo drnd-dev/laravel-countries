@@ -10,9 +10,9 @@ trait WithOnlyWhereFunctions
     /**
      * Get a list of country IDs.
      *
-     * @return Collection
+     * @return Collection<int, int>
      */
-    public function onlyId()
+    public function onlyId(): Collection
     {
         return $this->withNamesAndSlugs()->pluck('id');
     }
@@ -20,9 +20,9 @@ trait WithOnlyWhereFunctions
     /**
      * Get a list of country UIDs.
      *
-     * @return Collection
+     * @return Collection<int, string>
      */
-    public function onlyUid()
+    public function onlyUid(): Collection
     {
         return $this->withNamesAndSlugs()->pluck('uid');
     }
@@ -30,9 +30,9 @@ trait WithOnlyWhereFunctions
     /**
      * Get a list of country names.
      *
-     * @return Collection
+     * @return Collection<int, string>
      */
-    public function onlyName()
+    public function onlyName(): Collection
     {
         return $this->withNamesAndSlugs()->pluck('name');
     }
@@ -40,9 +40,9 @@ trait WithOnlyWhereFunctions
     /**
      * Get a list of official country names.
      *
-     * @return Collection
+     * @return Collection<int, string>
      */
-    public function onlyOfficialName()
+    public function onlyOfficialName(): Collection
     {
         return $this->withNamesAndSlugs()->pluck('official_name');
     }
@@ -50,9 +50,9 @@ trait WithOnlyWhereFunctions
     /**
      * Get a list of ISO 3166-1 alpha-2 codes.
      *
-     * @return Collection
+     * @return Collection<int, string>
      */
-    public function onlyIso()
+    public function onlyIso(): Collection
     {
         return $this->onlyAlpha2();
     }
@@ -60,9 +60,9 @@ trait WithOnlyWhereFunctions
     /**
      * Get a list of ISO 3166-1 alpha-2 codes.
      *
-     * @return Collection
+     * @return Collection<int, string>
      */
-    public function onlyAlpha2()
+    public function onlyAlpha2(): Collection
     {
         return $this->withNamesAndSlugs()->pluck('iso_alpha_2');
     }
@@ -70,19 +70,17 @@ trait WithOnlyWhereFunctions
     /**
      * Get a list of ISO 3166-1 alpha-3 codes.
      *
-     * @return Collection
+     * @return Collection<int, string>
      */
-    public function onlyAlpha3()
+    public function onlyAlpha3(): Collection
     {
         return $this->withNamesAndSlugs()->pluck('iso_alpha_3');
     }
 
     /**
      * Get a list of flag emojis.
-     *
-     * @return FlagEmoji
      */
-    public function onlyFlag()
+    public function onlyFlag(): FlagEmoji
     {
         return $this->onlyEmoji();
     }
@@ -92,12 +90,10 @@ trait WithOnlyWhereFunctions
      *
      * This method return a list of country flag emojis.
      * The list is cached for a long time to avoid to query the database too much.
-     *
-     * @return FlagEmoji
      */
-    public function onlyEmoji()
+    public function onlyEmoji(): FlagEmoji
     {
-        $result = $this->withNamesSlugsAndFlags()->pluck('flag_emoji') ?? collect([]);
+        $result = $this->withNamesSlugsAndFlags()->pluck('flag_emoji');
 
         return new FlagEmoji($result);
     }
@@ -106,11 +102,11 @@ trait WithOnlyWhereFunctions
      * Get a list of flag emojis in a specific format.
      *
      * @param  string  $type  The type of emoji to include. Either 'img', 'utf8', 'utf16', 'html' or 'css'.
-     * @return Collection
+     * @return Collection<int, string>
      */
-    public function onlyEmojiIn(string $type)
+    public function onlyEmojiIn(string $type): Collection
     {
-        $result = $this->withNamesSlugsAndFlags()->pluck('flag_emoji') ?? collect([]);
+        $result = $this->withNamesSlugsAndFlags()->pluck('flag_emoji');
 
         return $result->pluck($type);
     }
@@ -121,9 +117,9 @@ trait WithOnlyWhereFunctions
      * This method return a list of country flag emojis as images.
      * The list is cached for a long time to avoid to query the database too much.
      *
-     * @return Collection
+     * @return Collection<int, string>
      */
-    public function onlyEmojiInImg()
+    public function onlyEmojiInImg(): Collection
     {
         return $this->onlyEmojiIn('img');
     }
@@ -134,9 +130,9 @@ trait WithOnlyWhereFunctions
      * This method returns a list of country flag emojis as UTF-8 strings.
      * The list is cached for a long time to avoid to query the database too much.
      *
-     * @return Collection
+     * @return Collection<int, string>
      */
-    public function onlyEmojiInUtf8()
+    public function onlyEmojiInUtf8(): Collection
     {
         return $this->onlyEmojiIn('utf8');
     }
@@ -147,9 +143,9 @@ trait WithOnlyWhereFunctions
      * This method returns a list of country flag emojis as UTF-16 strings.
      * The list is cached for a long time to avoid to query the database too much.
      *
-     * @return Collection
+     * @return Collection<int, string>
      */
-    public function onlyEmojiInUtf16()
+    public function onlyEmojiInUtf16(): Collection
     {
         return $this->onlyEmojiIn('utf16');
     }
@@ -160,9 +156,9 @@ trait WithOnlyWhereFunctions
      * This method returns a list of country flag emojis as HTML entities.
      * The list is cached for a long time to avoid to query the database too much.
      *
-     * @return Collection
+     * @return Collection<int, string>
      */
-    public function onlyEmojiInHtml()
+    public function onlyEmojiInHtml(): Collection
     {
         return $this->onlyEmojiIn('html');
     }
@@ -173,9 +169,9 @@ trait WithOnlyWhereFunctions
      * This method returns a list of country flag emojis as CSS values.
      * The list is cached for a long time to avoid to query the database too much.
      *
-     * @return Collection
+     * @return Collection<int, string>
      */
-    public function onlyEmojiInCss()
+    public function onlyEmojiInCss(): Collection
     {
         return $this->onlyEmojiIn('css');
     }
@@ -186,9 +182,9 @@ trait WithOnlyWhereFunctions
      * This method returns a list of country flag emojis as hex codes.
      * The list is cached for a long time to avoid to query the database too much.
      *
-     * @return Collection
+     * @return Collection<int, string>
      */
-    public function onlyEmojiInHex()
+    public function onlyEmojiInHex(): Collection
     {
         return $this->onlyEmojiIn('hex');
     }
@@ -199,9 +195,9 @@ trait WithOnlyWhereFunctions
      * This method returns a list of country flag emojis as Unicode code points.
      * The list is cached for a long time to avoid to query the database too much.
      *
-     * @return Collection
+     * @return Collection<int, string>
      */
-    public function onlyEmojiInUCode()
+    public function onlyEmojiInUCode(): Collection
     {
         return $this->onlyEmojiIn('uCode');
     }
@@ -212,9 +208,9 @@ trait WithOnlyWhereFunctions
      * This method returns a list of country flag emojis as decimal representations.
      * The list is cached for a long time to avoid to query the database too much.
      *
-     * @return Collection
+     * @return Collection<int, string>
      */
-    public function onlyEmojiInDecimal()
+    public function onlyEmojiInDecimal(): Collection
     {
         return $this->onlyEmojiIn('decimal');
     }
@@ -225,9 +221,9 @@ trait WithOnlyWhereFunctions
      * This method returns a list of country flag emojis as shortcodes.
      * The list is cached for a long time to avoid to query the database too much.
      *
-     * @return Collection
+     * @return Collection<int, string>
      */
-    public function onlyEmojiInShortCode()
+    public function onlyEmojiInShortCode(): Collection
     {
         return $this->onlyEmojiIn('shortcode');
     }

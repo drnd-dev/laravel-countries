@@ -10,19 +10,17 @@ class MO_MacauSARChina extends CountrySeeder
     /**
      * Attribute that defines the language of countries
      */
-    public ?string $lang = 'en';
+    public string $lang = 'en';
 
     /**
      * Attribute that defines the language of countries
      */
-    public ?string $region = 'asia';
+    public string $region = 'asia';
 
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         // Set the country's common name
         $this->name = 'Macau';
@@ -255,7 +253,7 @@ class MO_MacauSARChina extends CountrySeeder
         Builder::country($this);
     }
 
-    public function geographical()
+    public function geographical(): string
     {
         return '{"type":"FeatureCollection","features":[{"type":"Feature","properties":{"cca2":"mo"},"geometry":{"type":"Polygon","coordinates":[[[113.531662,22.194736],[113.531372,22.201939],[113.532494,22.20583],[113.536102,22.211662],[113.545258,22.214439],[113.554428,22.21273],[113.556374,22.193607],[113.555817,22.186939],[113.552467,22.183052],[113.546097,22.184441],[113.531662,22.194736]]]}}]}';
     }

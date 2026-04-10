@@ -27,7 +27,8 @@ class Builder
     {
         DB::beginTransaction();
 
-        $region = CountryRegion::whereSlug($country->region, $country->lang)
+        $region = CountryRegion::query()
+            ->whereSlug($country->region, $country->lang)
             ->firstOrFail();
 
         $countryCreated = $region->countries()->create([
@@ -46,10 +47,10 @@ class Builder
             'languages' => $country->languages,
             'tld' => $country->tld,
             'alternative_tld' => $country->alternative_tlds,
-            'borders' => array_map('strtolower', array_column($country->borders, 'iso_alpha_2')) ?? [],
+            'borders' => $country->borders ? array_map('strtolower', array_column($country->borders, 'iso_alpha_2')) : [],
             'timezones' => [
                 'main' => $country->timezones[0] ?? [],
-                'others' => array_slice($country->timezones, 1) ?? [],
+                'others' => $country->timezones ? array_slice($country->timezones, 1) : [],
             ],
 
             'currency' => [
@@ -80,21 +81,21 @@ class Builder
                 'shortcode' => $country->emoji['shortcode'] ?? null,
             ],
 
-            'flag_colors' => array_column($country->flag_colors, 'name'),
-            'flag_colors_web' => array_column($country->flag_colors, 'web_name'),
-            'flag_colors_contrast' => array_column($country->flag_colors, 'contrast'),
-            'flag_colors_hex' => array_column($country->flag_colors, 'hex'),
-            'flag_colors_rgb' => array_column($country->flag_colors, 'rgb'),
-            'flag_colors_cmyk' => array_column($country->flag_colors, 'cmyk'),
-            'flag_colors_hsl' => array_column($country->flag_colors, 'hsl'),
-            'flag_colors_hsv' => array_column($country->flag_colors, 'hsv'),
-            'flag_colors_pantone' => array_column($country->flag_colors, 'pantone'),
+            'flag_colors' => $country->flag_colors ? array_column($country->flag_colors, 'name') : null,
+            'flag_colors_web' => $country->flag_colors ? array_column($country->flag_colors, 'web_name') : null,
+            'flag_colors_contrast' => $country->flag_colors ? array_column($country->flag_colors, 'contrast') : null,
+            'flag_colors_hex' => $country->flag_colors ? array_column($country->flag_colors, 'hex') : null,
+            'flag_colors_rgb' => $country->flag_colors ? array_column($country->flag_colors, 'rgb') : null,
+            'flag_colors_cmyk' => $country->flag_colors ? array_column($country->flag_colors, 'cmyk') : null,
+            'flag_colors_hsl' => $country->flag_colors ? array_column($country->flag_colors, 'hsl') : null,
+            'flag_colors_hsv' => $country->flag_colors ? array_column($country->flag_colors, 'hsv') : null,
+            'flag_colors_pantone' => $country->flag_colors ? array_column($country->flag_colors, 'pantone') : null,
 
             'is_visible' => true,
 
             'en' => [
                 'name' => $country->name,
-                'slug' => Str::slug($country->name, '-'),
+                'slug' => $country->name ? Str::slug($country->name) : '',
             ],
         ]);
 
@@ -146,7 +147,7 @@ class Builder
         DB::beginTransaction();
 
         foreach ($regions as $slug => $region) {
-            $response = CountryRegion::whereTranslation('locale', 'en')
+            $response = CountryRegion::query()->whereTranslation('locale', 'en')
                 ->whereTranslation('slug', $slug)
                 ->first();
 
@@ -174,7 +175,7 @@ class Builder
         DB::beginTransaction();
 
         foreach ($countries as $iso => $country) {
-            $response = Country::where('iso_alpha_2', $iso)
+            $response = Country::query()->where('iso_alpha_2', $iso)
                 ->orWhere('iso_alpha_3', $iso)
                 ->first();
 

@@ -11,7 +11,7 @@ trait WithCoordinatesBootstrap
      */
     public function latitude(): ?float
     {
-        return $this->coordinates->latitude ?? null;
+        return $this->coordinates?->latitude ? (float) $this->coordinates->latitude : null;
     }
 
     /**
@@ -21,13 +21,13 @@ trait WithCoordinatesBootstrap
      */
     public function longitude(): ?float
     {
-        return $this->coordinates->longitude ?? null;
+        return $this->coordinates?->longitude ? (float) $this->coordinates->longitude : null;
     }
 
     /**
      * Get the coordinates in decimal format.
      *
-     * @return array|null an array with keys 'latitude' and 'longitude' with decimal values, or null if the values are not set.
+     * @return array an array with keys 'latitude' and 'longitude' with decimal values, or null if the values are not set.
      */
     public function coordinatesInDecimal(): array
     {
@@ -181,7 +181,7 @@ KML;
         $latitude = (float) $coordinates['latitude'];
         $longitude = (float) $coordinates['longitude'];
         $placename = $this->translate($locale)->name ?? $this->official_name;
-        $region = $this->region()->first()->translate($locale)->name ?? '';
+        $region = $this->region()->first()?->translate($locale)->name ?? '';
 
         return '<meta name="geo.position" content="'.number_format($latitude, 6).'; '.number_format($longitude, 6).'">'.PHP_EOL.
             '<meta name="geo.placename" content="'.htmlspecialchars($placename).'">'.PHP_EOL.
@@ -204,7 +204,10 @@ KML;
             'coordinates' => [$longitude, $latitude],
         ];
 
-        return json_encode($geoJSON, JSON_PRETTY_PRINT);
+        /** @var non-empty-string $json */
+        $json = json_encode($geoJSON, JSON_PRETTY_PRINT);
+
+        return $json;
     }
 
     /**

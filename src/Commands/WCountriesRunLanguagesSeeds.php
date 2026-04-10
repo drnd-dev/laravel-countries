@@ -8,7 +8,7 @@ use Lwwcas\LaravelCountries\Models\CountryRegionTranslation;
 use Lwwcas\LaravelCountries\Models\CountryRegionTranslation as RegionsLanguages;
 use Lwwcas\LaravelCountries\Models\CountryTranslation;
 use Lwwcas\LaravelCountries\Trait\WithBasePackageTools;
-use Lwwcas\LaravelCountries\trait\WithLanguages;
+use Lwwcas\LaravelCountries\Trait\WithLanguages;
 
 class WCountriesRunLanguagesSeeds extends Command
 {
@@ -32,12 +32,10 @@ class WCountriesRunLanguagesSeeds extends Command
 
     /**
      * Execute the console command.
-     *
-     * @return int
      */
-    public function handle()
+    public function handle(): int
     {
-        if (Schema::hasTable('lc_countries') == false || Schema::hasTable('lc_regions') == false) {
+        if (! Schema::hasTable('lc_countries') || ! Schema::hasTable('lc_regions')) {
             $this->error('First install the countries and regions tables.');
             $this->info('Run php artisan w-countries:install for the structure to be installed first.');
             $this->newLine();
@@ -96,6 +94,8 @@ class WCountriesRunLanguagesSeeds extends Command
         }
 
         $this->withEnd();
+
+        return 0;
     }
 
     /**
@@ -129,6 +129,7 @@ class WCountriesRunLanguagesSeeds extends Command
         }
 
         do {
+            /** @var array $selectedLanguages */
             $selectedLanguages = $this->choice(
                 'Please select the languages you want to Uninstall:',
                 $installedLanguages,
@@ -152,12 +153,12 @@ class WCountriesRunLanguagesSeeds extends Command
             }
         }
 
-        CountryTranslation::select('locale')
+        CountryTranslation::query()->select('locale')
             ->where('locale', '!=', 'en')
             ->whereIn('locale', $keysToDelete)
             ->delete();
 
-        CountryRegionTranslation::select('locale')
+        CountryRegionTranslation::query()->select('locale')
             ->where('locale', '!=', 'en')
             ->whereIn('locale', $keysToDelete)
             ->delete();
@@ -190,9 +191,14 @@ class WCountriesRunLanguagesSeeds extends Command
 
         foreach ($locales as $locale) {
             $languageName = $this->languagesByLocale[$locale] ?? null;
+
+            if (! $languageName) {
+                continue;
+            }
+
             $languageClass = $this->languages[$languageName] ?? null;
 
-            if ($languageName && $languageClass) {
+            if ($languageClass) {
                 $installedLanguages[$languageName] = $languageClass;
             }
         }

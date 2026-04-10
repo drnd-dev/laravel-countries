@@ -52,12 +52,13 @@ class RegionsSeeder extends Seeder
             ],
         ];
 
-        if (Schema::hasTable('lc_regions') == false) {
+        if (! Schema::hasTable('lc_regions')) {
             return;
         }
 
         foreach ($regions as $region) {
-            $countryRegion = CountryRegion::whereSlug(Str::slug($region['name'], '-'), 'en')
+            $countryRegion = CountryRegion::query()
+                ->whereSlug(Str::slug($region['name']), 'en')
                 ->first();
 
             if ($countryRegion != null) {

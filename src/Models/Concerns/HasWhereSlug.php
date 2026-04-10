@@ -2,7 +2,8 @@
 
 namespace Lwwcas\LaravelCountries\Models\Concerns;
 
-use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 
 trait HasWhereSlug
@@ -10,14 +11,15 @@ trait HasWhereSlug
     /**
      * Find a model by slug.
      *
-     *
-     * @return Illuminate\Database\Eloquent\Collection
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
-    public function scopeWhereSlug($query, string $slug): Builder
+    #[Scope]
+    protected function whereSlug(Builder $query, string $slug, ?string $locale = null): Builder
     {
         $slug = Str::slug($slug);
 
-        $query->whereTranslation('slug', $slug);
+        $query->whereTranslation('slug', $slug, $locale);
 
         return $query;
     }
@@ -25,14 +27,15 @@ trait HasWhereSlug
     /**
      * Find a model by slug (or where).
      *
-     *
-     * @return Illuminate\Database\Eloquent\Collection
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
-    public function scopeOrWhereSlug($query, string $slug): Builder
+    #[Scope]
+    protected function orWhereSlug(Builder $query, string $slug, ?string $locale = null): Builder
     {
         $slug = Str::slug($slug);
 
-        $query->orWhereTranslation('slug', $slug);
+        $query->orWhereTranslation('slug', $slug, $locale);
 
         return $query;
     }

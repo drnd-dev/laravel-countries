@@ -2,17 +2,19 @@
 
 namespace Lwwcas\LaravelCountries\Models\Concerns;
 
-use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 
 trait HasWhereIsoAlpha3
 {
     /**
      * Find a model by iso Alpha 3.
      *
-     *
-     * @return Illuminate\Database\Eloquent\Collection
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
-    public function scopeWhereIsoAlpha3($query, string $isoAlpha3): Builder
+    #[Scope]
+    protected function whereIsoAlpha3(Builder $query, string $isoAlpha3): Builder
     {
         return $query->where('iso_alpha_3', $isoAlpha3);
     }
@@ -20,11 +22,12 @@ trait HasWhereIsoAlpha3
     /**
      * Find a model by iso Alpha 3, or the given iso Alpha 3.
      *
-     *
-     * @return Illuminate\Database\Eloquent\Collection
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
-    public function scopeOrWhereIsoAlpha3($query, string $isoAlpha2): Builder
+    #[Scope]
+    protected function orWhereIsoAlpha3(Builder $query, string $isoAlpha3): Builder
     {
-        return $query->orWhere('iso_alpha_3', $isoAlpha2);
+        return $query->orWhere('iso_alpha_3', $isoAlpha3);
     }
 }

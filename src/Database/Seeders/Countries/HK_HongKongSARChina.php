@@ -10,19 +10,17 @@ class HK_HongKongSARChina extends CountrySeeder
     /**
      * Attribute that defines the language of countries
      */
-    public ?string $lang = 'en';
+    public string $lang = 'en';
 
     /**
      * Attribute that defines the language of countries
      */
-    public ?string $region = 'asia';
+    public string $region = 'asia';
 
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         // Set the country's common name
         $this->name = 'Hong Kong';
@@ -235,7 +233,7 @@ class HK_HongKongSARChina extends CountrySeeder
         Builder::country($this);
     }
 
-    public function geographical()
+    public function geographical(): string
     {
         return '{
   "type": "FeatureCollection",

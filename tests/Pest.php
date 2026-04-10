@@ -15,10 +15,6 @@ use Lwwcas\LaravelCountries\Tests\TestCase;
 
 uses(TestCase::class)->in(__DIR__);
 
-beforeEach(function () {
-    $this->setUp();
-});
-
 /*
 |--------------------------------------------------------------------------
 | Expectations

@@ -2,15 +2,19 @@
 
 namespace Lwwcas\LaravelCountries\Models\Concerns;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
+
 trait HasWhereWmo
 {
     /**
      * Find a country by WMO (World Meteorological Organization) code.
      *
-     * @param  string  $wmo
-     * @return Illuminate\Database\Eloquent\Collection
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
-    public function scopeWhereWmo($query, $wmo)
+    #[Scope]
+    protected function whereWmo(Builder $query, string $wmo): Builder
     {
         return $query->where('wmo', $wmo);
     }
@@ -18,10 +22,11 @@ trait HasWhereWmo
     /**
      * Find a country by WMO (World Meteorological Organization) code.
      *
-     * @param  string  $wmo
-     * @return Illuminate\Database\Eloquent\Collection
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
-    public function scopeWhereWmoCode($query, $wmo)
+    #[Scope]
+    protected function whereWmoCode(Builder $query, string $wmo): Builder
     {
         return $query->whereWmo($wmo);
     }
@@ -29,10 +34,11 @@ trait HasWhereWmo
     /**
      * Find a country by WMO (World Meteorological Organization) code.
      *
-     * @param  string  $wmo
-     * @return Illuminate\Database\Eloquent\Collection
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
-    public function scopeWhereWorldMeteorologicalOrganizationCode($query, $wmo)
+    #[Scope]
+    protected function whereWorldMeteorologicalOrganizationCode(Builder $query, string $wmo): Builder
     {
         return $query->whereWmo($wmo);
     }

@@ -68,7 +68,7 @@ it('should can filters regions by Name', function () {
 
     CountryRegionFactory::new()->count(5)->create();
 
-    $region = CountryRegion::whereName('Europe')->first();
+    $region = CountryRegion::query()->whereName('Europe')->first();
 
     expect($region)->toBeInstanceOf(CountryRegion::class);
     expect($region->slug)->toEqual('europe');
@@ -93,14 +93,14 @@ it('should can filters regions by Name on specific locale', function () {
     ]);
 
     App::setLocale('en');
-    $region = CountryRegion::whereName('Europe EN')->first();
+    $region = CountryRegion::query()->whereName('Europe EN')->first();
 
     expect($region)->toBeInstanceOf(CountryRegion::class);
     expect($region->slug)->toBeString();
     expect($region->slug)->toEqual('europe-en');
 
     App::setLocale('it');
-    $region = CountryRegion::whereName('Europe EN')->first();
+    $region = CountryRegion::query()->whereName('Europe EN')->first();
 
     expect($region)->toBeInstanceOf(CountryRegion::class);
     expect($region->slug)->toBeString();

@@ -9,7 +9,7 @@ trait VisibleAttributes
      */
     public function isVisible(): bool
     {
-        return (bool) $this->is_visible == true || $this->is_visible == 1;
+        return (bool) $this->is_visible;
     }
 
     /**
@@ -17,7 +17,7 @@ trait VisibleAttributes
      */
     public function isHidden(): bool
     {
-        return (bool) $this->is_visible == false || $this->is_visible == 0;
+        return ! $this->is_visible;
     }
 
     /**
@@ -27,7 +27,7 @@ trait VisibleAttributes
      */
     public function setVisibleTrue(): self
     {
-        $this->is_visible = 1;
+        $this->is_visible = true;
         $this->save();
 
         return $this;
@@ -40,7 +40,7 @@ trait VisibleAttributes
      */
     public function setVisibleFalse(): self
     {
-        $this->is_visible = 0;
+        $this->is_visible = false;
         $this->save();
 
         return $this;
@@ -53,7 +53,7 @@ trait VisibleAttributes
      */
     public function setModelVisible(): self
     {
-        $this->is_visible = 1;
+        $this->is_visible = true;
         $this->save();
 
         return $this;
@@ -66,7 +66,7 @@ trait VisibleAttributes
      */
     public function setModelHidden(): self
     {
-        $this->is_visible = 0;
+        $this->is_visible = false;
         $this->save();
 
         return $this;

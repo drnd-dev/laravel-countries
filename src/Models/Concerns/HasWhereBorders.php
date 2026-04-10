@@ -2,7 +2,8 @@
 
 namespace Lwwcas\LaravelCountries\Models\Concerns;
 
-use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 use Lwwcas\LaravelCountries\Models\Country;
 
@@ -11,10 +12,11 @@ trait HasWhereBorders
     /**
      * Find a country by border.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
-    public function scopeWhereBorder($query, string $board)
+    #[Scope]
+    protected function whereBorder(Builder $query, string $board): Builder
     {
         $boardInLowercase = Str::lower($board);
 
@@ -24,10 +26,11 @@ trait HasWhereBorders
     /**
      * Find a country by an array of border.
      *
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
-    public function scopeWhereBorders($query, array $boards)
+    #[Scope]
+    protected function whereBorders(Builder $query, array $boards): Builder
     {
         $boardsInLowercase = array_map(fn ($lang) => Str::lower($lang), $boards);
 
@@ -45,7 +48,7 @@ trait HasWhereBorders
      */
     public function hasBorders(): bool
     {
-        return count($this->borders) > 0;
+        return $this->borders !== null && count($this->borders) > 0;
     }
 
     /**
@@ -55,7 +58,7 @@ trait HasWhereBorders
      */
     public function bordersCount(): int
     {
-        return count($this->borders);
+        return $this->borders !== null ? count($this->borders) : 0;
     }
 
     /**
@@ -72,10 +75,10 @@ trait HasWhereBorders
      */
     public function bordersWithCountries(): array
     {
-        $borderCodes = $this->borders;
+        $borderCodes = $this->borders ?? [];
         $isoAlpha2 = $this->iso_alpha_2;
 
-        $countries = Country::select('id', 'uid', 'official_name', 'iso_alpha_2', 'iso_alpha_3')
+        $countries = Country::query()->select('id', 'uid', 'official_name', 'iso_alpha_2', 'iso_alpha_3')
             ->where('iso_alpha_2', '<>', $isoAlpha2)
             ->where(function ($query) use ($borderCodes, $isoAlpha2) {
                 foreach ($borderCodes as $borderCode) {
@@ -121,10 +124,10 @@ trait HasWhereBorders
      */
     public function bordersWithFlags(string $emojiType = 'img'): array
     {
-        $borderCodes = $this->borders;
+        $borderCodes = $this->borders ?? [];
         $isoAlpha2 = $this->iso_alpha_2;
 
-        $countries = Country::select('id', 'uid', 'official_name', 'iso_alpha_2', 'iso_alpha_3', 'flag_emoji')
+        $countries = Country::query()->select('id', 'uid', 'official_name', 'iso_alpha_2', 'iso_alpha_3', 'flag_emoji')
             ->where('iso_alpha_2', '<>', $isoAlpha2)
             ->where(function ($query) use ($borderCodes, $isoAlpha2) {
                 foreach ($borderCodes as $borderCode) {

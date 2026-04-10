@@ -13,12 +13,12 @@ it('should filters countries by iso_numeric code', function () {
 
     CountryFactory::new()->count(10)->create();
 
-    $country = Country::whereIsoNumeric('894')->first();
+    $country = Country::query()->whereIsoNumeric('894')->first();
     expect($country)->toBeInstanceOf(Country::class);
     expect($country->official_name)->toEqual('United States of America');
     expect($country->iso_numeric)->toEqual('894');
 
-    $country = Country::whereIsoNumeric(894)->first();
+    $country = Country::query()->whereIsoNumeric(894)->first();
     expect($country)->toBeInstanceOf(Country::class);
     expect($country->official_name)->toEqual('United States of America');
     expect($country->iso_numeric)->toEqual('894');

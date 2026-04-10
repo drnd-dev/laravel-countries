@@ -10,19 +10,17 @@ class NF_NorfolkIsland extends CountrySeeder
     /**
      * Attribute that defines the language of countries
      */
-    public ?string $lang = 'en';
+    public string $lang = 'en';
 
     /**
      * Attribute that defines the language of countries
      */
-    public ?string $region = 'oceania';
+    public string $region = 'oceania';
 
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         // Set the country's common name
         $this->name = 'Norfolk Island';
@@ -229,7 +227,7 @@ class NF_NorfolkIsland extends CountrySeeder
         Builder::country($this);
     }
 
-    public function geographical()
+    public function geographical(): string
     {
         return '{"type":"FeatureCollection","features":[{"type":"Feature","properties":{"cca2":"nf"},"geometry":{"type":"Polygon","coordinates":[[[167.964966,-29.081112],[167.923584,-29.056667],[167.916077,-29.043056],[167.909424,-29.009445],[167.912476,-29.00528],[167.930542,-29.000557],[167.944702,-29.001945],[167.949982,-29.004169],[167.997742,-29.025002],[168,-29.030003],[167.983307,-29.066113],[167.964966,-29.081112]]]}}]}';
     }

@@ -2,6 +2,7 @@
 
 namespace Lwwcas\LaravelCountries\Trait;
 
+use Illuminate\Support\Collection;
 use Lwwcas\LaravelCountries\Facades\FlagEmoji;
 
 trait WithPairWhereFunctions
@@ -12,9 +13,9 @@ trait WithPairWhereFunctions
      * This method returns a list of countries with their ids and official names.
      * The list is cached for a long time to avoid querying the database too much.
      *
-     * @return Collection
+     * @return Collection<int, string>
      */
-    public function idAndOfficialName()
+    public function idAndOfficialName(): Collection
     {
         return $this->withNamesAndSlugs()->pluck('official_name', 'id');
     }
@@ -25,9 +26,9 @@ trait WithPairWhereFunctions
      * This method returns a list of countries with their ids and UIDs.
      * The list is cached for a long time to avoid querying the database too much.
      *
-     * @return Collection
+     * @return Collection<int, string>
      */
-    public function idAndUid()
+    public function idAndUid(): Collection
     {
         return $this->withNamesAndSlugs()->pluck('uid', 'id');
     }
@@ -38,9 +39,9 @@ trait WithPairWhereFunctions
      * This method returns a list of countries with their ids and names.
      * The list is cached for a long time to avoid querying the database too much.
      *
-     * @return Collection
+     * @return Collection<int, string>
      */
-    public function idAndName()
+    public function idAndName(): Collection
     {
         return $this->withNamesAndSlugs()->pluck('name', 'id');
     }
@@ -51,9 +52,9 @@ trait WithPairWhereFunctions
      * This method returns a list of countries with their ids and iso_alpha_2 codes.
      * The list is cached for a long time to avoid querying the database too much.
      *
-     * @return Collection
+     * @return Collection<int, string>
      */
-    public function idAndAlpha2()
+    public function idAndAlpha2(): Collection
     {
         return $this->withNamesAndSlugs()->pluck('iso_alpha_2', 'id');
     }
@@ -64,9 +65,9 @@ trait WithPairWhereFunctions
      * This method returns a list of countries with their ids and iso_alpha_3 codes.
      * The list is cached for a long time to avoid querying the database too much.
      *
-     * @return Collection
+     * @return Collection<int, string>
      */
-    public function idAndAlpha3()
+    public function idAndAlpha3(): Collection
     {
         return $this->withNamesAndSlugs()->pluck('iso_alpha_3', 'id');
     }
@@ -76,12 +77,10 @@ trait WithPairWhereFunctions
      *
      * This method returns a list of countries with their ids and emojis.
      * The list is cached for a long time to avoid querying the database too much.
-     *
-     * @return FlagEmoji
      */
-    public function idAndEmoji()
+    public function idAndEmoji(): FlagEmoji
     {
-        $result = $this->withNamesSlugsAndFlags()->pluck('flag_emoji', 'id') ?? collect([]);
+        $result = $this->withNamesSlugsAndFlags()->pluck('flag_emoji', 'id');
 
         return new FlagEmoji($result);
     }
@@ -92,9 +91,9 @@ trait WithPairWhereFunctions
      * This method returns a list of countries with their uids and names.
      * The list is cached for a long time to avoid querying the database too much.
      *
-     * @return Collection
+     * @return Collection<string, string>
      */
-    public function uidAndName()
+    public function uidAndName(): Collection
     {
         return $this->withNamesAndSlugs()->pluck('name', 'uid');
     }
@@ -105,9 +104,9 @@ trait WithPairWhereFunctions
      * This method returns a list of countries with their uids and official names.
      * The list is cached for a long time to avoid querying the database too much.
      *
-     * @return Collection
+     * @return Collection<string, string>
      */
-    public function uidAndOfficialName()
+    public function uidAndOfficialName(): Collection
     {
         return $this->withNamesAndSlugs()->pluck('official_name', 'uid');
     }
@@ -118,9 +117,9 @@ trait WithPairWhereFunctions
      * This method returns a list of countries with their uids and iso_alpha_2 codes.
      * The list is cached for a long time to avoid querying the database too much.
      *
-     * @return Collection
+     * @return Collection<string, string>
      */
-    public function uidAndAlpha2()
+    public function uidAndAlpha2(): Collection
     {
         return $this->withNamesAndSlugs()->pluck('iso_alpha_2', 'uid');
     }
@@ -131,9 +130,9 @@ trait WithPairWhereFunctions
      * This method returns a list of countries with their uids and iso_alpha_3 codes.
      * The list is cached for a long time to avoid querying the database too much.
      *
-     * @return Collection
+     * @return Collection<string, string>
      */
-    public function uidAndAlpha3()
+    public function uidAndAlpha3(): Collection
     {
         return $this->withNamesAndSlugs()->pluck('iso_alpha_3', 'uid');
     }
@@ -143,12 +142,10 @@ trait WithPairWhereFunctions
      *
      * This method returns a list of countries with their uids and emojis.
      * The list is cached for a long time to avoid querying the database too much.
-     *
-     * @return Collection
      */
-    public function uidAndEmoji()
+    public function uidAndEmoji(): FlagEmoji
     {
-        $result = $this->withNamesSlugsAndFlags()->pluck('flag_emoji', 'uid') ?? collect([]);
+        $result = $this->withNamesSlugsAndFlags()->pluck('flag_emoji', 'uid');
 
         return new FlagEmoji($result);
     }
@@ -159,9 +156,9 @@ trait WithPairWhereFunctions
      * This method returns a list of countries with their names and official names.
      * The list is cached for a long time to avoid querying the database too much.
      *
-     * @return Collection
+     * @return Collection<string, string>
      */
-    public function nameAndOfficialName()
+    public function nameAndOfficialName(): Collection
     {
         return $this->withNamesAndSlugs()->pluck('official_name', 'name');
     }
@@ -172,9 +169,9 @@ trait WithPairWhereFunctions
      * This method returns a list of countries with their names and iso_alpha_2 codes.
      * The list is cached for a long time to avoid querying the database too much.
      *
-     * @return Collection
+     * @return Collection<string, string>
      */
-    public function nameAndAlpha2()
+    public function nameAndAlpha2(): Collection
     {
         return $this->withNamesAndSlugs()->pluck('iso_alpha_2', 'name');
     }
@@ -185,9 +182,9 @@ trait WithPairWhereFunctions
      * This method returns a list of countries with their names and iso_alpha_3 codes.
      * The list is cached for a long time to avoid querying the database too much.
      *
-     * @return Collection
+     * @return Collection<string, string>
      */
-    public function nameAndAlpha3()
+    public function nameAndAlpha3(): Collection
     {
         return $this->withNamesAndSlugs()->pluck('iso_alpha_3', 'name');
     }
@@ -197,12 +194,10 @@ trait WithPairWhereFunctions
      *
      * This method returns a list of countries with their names and emojis.
      * The list is cached for a long time to avoid querying the database too much.
-     *
-     * @return FlagEmoji
      */
-    public function nameAndEmoji()
+    public function nameAndEmoji(): FlagEmoji
     {
-        $result = $this->withNamesSlugsAndFlags()->pluck('flag_emoji', 'name') ?? collect([]);
+        $result = $this->withNamesSlugsAndFlags()->pluck('flag_emoji', 'name');
 
         return new FlagEmoji($result);
     }
@@ -213,9 +208,9 @@ trait WithPairWhereFunctions
      * This method returns a list of countries with their official names and iso_alpha_2 codes.
      * The list is cached for a long time to avoid querying the database too much.
      *
-     * @return Collection
+     * @return Collection<string, string>
      */
-    public function officialNameAndAlpha2()
+    public function officialNameAndAlpha2(): Collection
     {
         return $this->withNamesAndSlugs()->pluck('iso_alpha_2', 'official_name');
     }
@@ -226,9 +221,9 @@ trait WithPairWhereFunctions
      * This method returns a list of countries with their official names and iso_alpha_3 codes.
      * The list is cached for a long time to avoid querying the database too much.
      *
-     * @return Collection
+     * @return Collection<string, string>
      */
-    public function officialNameAndAlpha3()
+    public function officialNameAndAlpha3(): Collection
     {
         return $this->withNamesAndSlugs()->pluck('iso_alpha_3', 'official_name');
     }
@@ -238,12 +233,10 @@ trait WithPairWhereFunctions
      *
      * This method returns a list of countries with their official names and emojis.
      * The list is cached for a long time to avoid querying the database too much.
-     *
-     * @return FlagEmoji
      */
-    public function officialNameAndEmoji()
+    public function officialNameAndEmoji(): FlagEmoji
     {
-        $result = $this->withNamesSlugsAndFlags()->pluck('flag_emoji', 'official_name') ?? collect([]);
+        $result = $this->withNamesSlugsAndFlags()->pluck('flag_emoji', 'official_name');
 
         return new FlagEmoji($result);
     }
@@ -254,9 +247,9 @@ trait WithPairWhereFunctions
      * This method returns a list of countries with their iso_alpha_2 codes and ids.
      * The list is cached for a long time to avoid querying the database too much.
      *
-     * @return Collection
+     * @return Collection<string, int>
      */
-    public function alpha2AndId()
+    public function alpha2AndId(): Collection
     {
         return $this->withNamesAndSlugs()->pluck('id', 'iso_alpha_2');
     }
@@ -267,9 +260,9 @@ trait WithPairWhereFunctions
      * This method returns a list of countries with their iso_alpha_2 codes and UIDs.
      * The list is cached for a long time to avoid querying the database too much.
      *
-     * @return Collection
+     * @return Collection<string, string>
      */
-    public function alpha2AndUid()
+    public function alpha2AndUid(): Collection
     {
         return $this->withNamesAndSlugs()->pluck('uid', 'iso_alpha_2');
     }
@@ -280,9 +273,9 @@ trait WithPairWhereFunctions
      * This method returns a list of countries with their iso_alpha_2 codes and names.
      * The list is cached for a long time to avoid querying the database too much.
      *
-     * @return Collection
+     * @return Collection<string, string>
      */
-    public function alpha2AndName()
+    public function alpha2AndName(): Collection
     {
         return $this->withNamesAndSlugs()->pluck('name', 'iso_alpha_2');
     }
@@ -293,9 +286,9 @@ trait WithPairWhereFunctions
      * This method returns a list of countries with their iso_alpha_2 codes and official names.
      * The list is cached for a long time to avoid querying the database too much.
      *
-     * @return Collection
+     * @return Collection<string, string>
      */
-    public function alpha2AndOfficialName()
+    public function alpha2AndOfficialName(): Collection
     {
         return $this->withNamesAndSlugs()->pluck('official_name', 'iso_alpha_2');
     }
@@ -306,9 +299,9 @@ trait WithPairWhereFunctions
      * This method returns a list of countries with their iso_alpha_2 and iso_alpha_3 codes.
      * The list is cached for a long time to avoid querying the database too much.
      *
-     * @return Collection
+     * @return Collection<string, string>
      */
-    public function alpha2AndAlpha3()
+    public function alpha2AndAlpha3(): Collection
     {
         return $this->withNamesAndSlugs()->pluck('iso_alpha_3', 'iso_alpha_2');
     }
@@ -318,12 +311,10 @@ trait WithPairWhereFunctions
      *
      * This method returns a list of countries with their iso_alpha_2 codes and emojis.
      * The list is cached for a long time to avoid querying the database too much.
-     *
-     * @return FlagEmoji
      */
-    public function alpha2AndEmoji()
+    public function alpha2AndEmoji(): FlagEmoji
     {
-        $result = $this->withNamesSlugsAndFlags()->pluck('flag_emoji', 'iso_alpha_2') ?? collect([]);
+        $result = $this->withNamesSlugsAndFlags()->pluck('flag_emoji', 'iso_alpha_2');
 
         return new FlagEmoji($result);
     }
@@ -334,9 +325,9 @@ trait WithPairWhereFunctions
      * This method returns a list of countries with their iso_alpha_3 codes and ids.
      * The list is cached for a long time to avoid querying the database too much.
      *
-     * @return Collection
+     * @return Collection<string, int>
      */
-    public function alpha3AndId()
+    public function alpha3AndId(): Collection
     {
         return $this->withNamesAndSlugs()->pluck('id', 'iso_alpha_3');
     }
@@ -347,9 +338,9 @@ trait WithPairWhereFunctions
      * This method returns a list of countries with their iso_alpha_3 codes and UIDs.
      * The list is cached for a long time to avoid querying the database too much.
      *
-     * @return Collection
+     * @return Collection<string, string>
      */
-    public function alpha3AndUid()
+    public function alpha3AndUid(): Collection
     {
         return $this->withNamesAndSlugs()->pluck('uid', 'iso_alpha_3');
     }
@@ -360,9 +351,9 @@ trait WithPairWhereFunctions
      * This method returns a list of countries with their iso_alpha_3 codes and names.
      * The list is cached for a long time to avoid querying the database too much.
      *
-     * @return Collection
+     * @return Collection<string, string>
      */
-    public function alpha3AndName()
+    public function alpha3AndName(): Collection
     {
         return $this->withNamesAndSlugs()->pluck('name', 'iso_alpha_3');
     }
@@ -373,9 +364,9 @@ trait WithPairWhereFunctions
      * This method returns a list of countries with their iso_alpha_3 codes and official names.
      * The list is cached for a long time to avoid querying the database too much.
      *
-     * @return Collection
+     * @return Collection<string, string>
      */
-    public function alpha3AndOfficialName()
+    public function alpha3AndOfficialName(): Collection
     {
         return $this->withNamesAndSlugs()->pluck('official_name', 'iso_alpha_3');
     }
@@ -385,12 +376,10 @@ trait WithPairWhereFunctions
      *
      * This method returns a list of countries with their iso_alpha_3 codes and emojis.
      * The list is cached for a long time to avoid querying the database too much.
-     *
-     * @return FlagEmoji
      */
-    public function alpha3AndEmoji()
+    public function alpha3AndEmoji(): FlagEmoji
     {
-        $result = $this->withNamesSlugsAndFlags()->pluck('flag_emoji', 'iso_alpha_3') ?? collect([]);
+        $result = $this->withNamesSlugsAndFlags()->pluck('flag_emoji', 'iso_alpha_3');
 
         return new FlagEmoji($result);
     }

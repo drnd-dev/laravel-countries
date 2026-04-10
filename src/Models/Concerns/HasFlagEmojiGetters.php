@@ -10,9 +10,9 @@ trait HasFlagEmojiGetters
      * @param  string  $type  The type of flag emoji to return. Defaults to 'img'.
      * @return string|null The flag emoji for the given type.
      */
-    public function getFlagEmojiBy(string $type = 'img')
+    public function getFlagEmojiBy(string $type = 'img'): ?string
     {
-        return $this->flag_emoji[$type] ?: null;
+        return is_array($this->flag_emoji) && isset($this->flag_emoji[$type]) ? $this->flag_emoji[$type] : null;
     }
 
     /**
@@ -22,7 +22,7 @@ trait HasFlagEmojiGetters
      *
      * @return string|null The flag emoji as an image.
      */
-    public function getFlagEmoji()
+    public function getFlagEmoji(): ?string
     {
         return $this->getFlagEmojiImg();
     }
@@ -34,7 +34,7 @@ trait HasFlagEmojiGetters
      *
      * @return string|null The flag emoji as an image.
      */
-    public function getFlagEmojiImage()
+    public function getFlagEmojiImage(): ?string
     {
         return $this->getFlagEmojiImg();
     }
@@ -44,9 +44,9 @@ trait HasFlagEmojiGetters
      *
      * @return string|null The flag emoji as an image.
      */
-    public function getFlagEmojiImg()
+    public function getFlagEmojiImg(): ?string
     {
-        return $this->flag_emoji['img'] ?: null;
+        return $this->getFlagEmojiBy('img');
     }
 
     /**
@@ -58,7 +58,7 @@ trait HasFlagEmojiGetters
      *
      * @return string The flag emoji as an image wrapped in an HTML element.
      */
-    public function getFlagEmojiImgWithHtmlCode()
+    public function getFlagEmojiImgWithHtmlCode(): string
     {
         return <<<HTML
 <span>{$this->getFlagEmojiImg()}</span>
@@ -73,9 +73,9 @@ HTML;
      *
      * @return string|null The flag emoji as a UTF-8 encoded string.
      */
-    public function getFlagEmojiUtf8()
+    public function getFlagEmojiUtf8(): ?string
     {
-        return $this->flag_emoji['utf8'] ?: null;
+        return $this->getFlagEmojiBy('utf8');
     }
 
     /**
@@ -88,7 +88,7 @@ HTML;
      * @return string The flag emoji as a UTF-8 encoded string wrapped in an
      *                HTML element.
      */
-    public function getFlagEmojiUtf8WithHtmlCode()
+    public function getFlagEmojiUtf8WithHtmlCode(): string
     {
         return <<<HTML
 <span>{$this->getFlagEmojiUtf8()}</span>
@@ -102,9 +102,9 @@ HTML;
      *
      * @return string|null The flag emoji as a UTF-16 encoded string.
      */
-    public function getFlagEmojiUtf16()
+    public function getFlagEmojiUtf16(): ?string
     {
-        return $this->flag_emoji['utf16'] ?: null;
+        return $this->getFlagEmojiBy('utf16');
     }
 
     /**
@@ -120,7 +120,7 @@ HTML;
      *                HTML element, and also including a JavaScript code to
      *                update the HTML element with the flag emoji.
      */
-    public function getFlagEmojiUtf16WithCode(string $divId = 'emoji-utf16')
+    public function getFlagEmojiUtf16WithCode(string $divId = 'emoji-utf16'): string
     {
         return <<<HTML
             {$this->getFlagEmojiUtf16WithHtmlCode($divId)}
@@ -140,7 +140,7 @@ HTML;
      * @return string The flag emoji as a UTF-16 encoded string wrapped in an
      *                HTML element.
      */
-    public function getFlagEmojiUtf16WithHtmlCode(string $divId = 'emoji-utf16')
+    public function getFlagEmojiUtf16WithHtmlCode(string $divId = 'emoji-utf16'): string
     {
         return <<<HTML
 <span id="{$divId}"></span>
@@ -162,7 +162,7 @@ HTML;
      *                including a JavaScript code to update the HTML element
      *                with the flag emoji.
      */
-    public function getFlagEmojiUtf16WithScriptCode(string $divId = 'emoji-utf16', bool $withTag = false)
+    public function getFlagEmojiUtf16WithScriptCode(string $divId = 'emoji-utf16', bool $withTag = false): string
     {
         if ($withTag) {
             return <<<SCRIPT
@@ -184,7 +184,7 @@ SCRIPT;
      *
      * @return string|null The flag emoji as a Unicode code point.
      */
-    public function getFlagEmojiCode()
+    public function getFlagEmojiCode(): ?string
     {
         return $this->getFlagEmojiUCode();
     }
@@ -196,9 +196,9 @@ SCRIPT;
      *
      * @return string|null The flag emoji as a Unicode code point.
      */
-    public function getFlagEmojiUCode()
+    public function getFlagEmojiUCode(): ?string
     {
-        return $this->flag_emoji['uCode'] ?: null;
+        return $this->getFlagEmojiBy('uCode');
     }
 
     /**
@@ -208,9 +208,9 @@ SCRIPT;
      *
      * @return string|null The flag emoji as a hexadecimal representation.
      */
-    public function getFlagEmojiHex()
+    public function getFlagEmojiHex(): ?string
     {
-        return $this->flag_emoji['hex'] ?: null;
+        return $this->getFlagEmojiBy('hex');
     }
 
     /**
@@ -222,7 +222,7 @@ SCRIPT;
      *
      * @return string The flag emoji as an HTML element with a hexadecimal representation.
      */
-    public function getFlagEmojiHexWithHtmlCode()
+    public function getFlagEmojiHexWithHtmlCode(): string
     {
         return <<<HTML
 <span>{$this->getFlagEmojiHex()}</span>
@@ -236,9 +236,9 @@ HTML;
      *
      * @return string|null The flag emoji as an HTML entity.
      */
-    public function getFlagEmojiHtml()
+    public function getFlagEmojiHtml(): ?string
     {
-        return $this->flag_emoji['html'] ?: null;
+        return $this->getFlagEmojiBy('html');
     }
 
     /**
@@ -250,7 +250,7 @@ HTML;
      *
      * @return string The flag emoji as an HTML element with an HTML entity.
      */
-    public function getFlagEmojiHtmlWithHtmlCode()
+    public function getFlagEmojiHtmlWithHtmlCode(): string
     {
         return <<<HTML
 <span>{$this->getFlagEmojiHtml()}</span>
@@ -264,9 +264,9 @@ HTML;
      *
      * @return string|null The flag emoji as a CSS value.
      */
-    public function getFlagEmojiCss()
+    public function getFlagEmojiCss(): ?string
     {
-        return $this->flag_emoji['css'] ?: null;
+        return $this->getFlagEmojiBy('css');
     }
 
     /**
@@ -277,7 +277,7 @@ HTML;
      * @param  string  $class  The class name for the HTML element.
      * @return string The flag emoji as a CSS value and HTML.
      */
-    public function getFlagEmojiCssWithCode($class = 'emoji-css')
+    public function getFlagEmojiCssWithCode($class = 'emoji-css'): string
     {
         return <<<HTML
         {$this->getFlagEmojiCssWithCssCode($class, true)}
@@ -297,7 +297,7 @@ HTML;
      * @param  bool  $withTag  Whether to return a complete CSS style block or just a CSS rule.
      * @return string The flag emoji as a CSS value or a complete CSS style block.
      */
-    public function getFlagEmojiCssWithCssCode(string $class = 'emoji-css', bool $withTag = false)
+    public function getFlagEmojiCssWithCssCode(string $class = 'emoji-css', bool $withTag = false): string
     {
         if ($withTag) {
             return <<<CSS
@@ -326,10 +326,12 @@ CSS;
      * @param  string  $class  The class name for the HTML element.
      * @return string The flag emoji as a HTML element.
      */
-    public function getFlagEmojiCssWithHtmlCode($class = 'emoji-css')
+    public function getFlagEmojiCssWithHtmlCode(string $class = 'emoji-css'): string
     {
+        $altText = property_exists($this, 'official_name') ? 'Flag of '.$this->official_name : '';
+
         return <<<HTML
-<span class="{$class}" alt="Flag of {$this->official_name}"></span>
+<span class="{$class}" alt="{$altText}"></span>
 HTML;
     }
 
@@ -340,9 +342,9 @@ HTML;
      *
      * @return string|null The flag emoji as a decimal representation.
      */
-    public function getFlagEmojiDecimal()
+    public function getFlagEmojiDecimal(): ?string
     {
-        return $this->flag_emoji['decimal'] ?: null;
+        return $this->getFlagEmojiBy('decimal');
     }
 
     /**
@@ -353,7 +355,7 @@ HTML;
      *
      * @return string The flag emoji as a decimal representation wrapped in an HTML element.
      */
-    public function getFlagEmojiDecimalWithHtmlCode()
+    public function getFlagEmojiDecimalWithHtmlCode(): string
     {
         return <<<HTML
 <span>{$this->getFlagEmojiDecimal()}</span>
@@ -367,8 +369,8 @@ HTML;
      *
      * @return string|null The flag emoji as a shortcode.
      */
-    public function getFlagEmojiShortCode()
+    public function getFlagEmojiShortCode(): ?string
     {
-        return $this->flag_emoji['shortcode'] ?: null;
+        return $this->getFlagEmojiBy('shortcode');
     }
 }
