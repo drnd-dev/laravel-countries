@@ -1,0 +1,52 @@
+name: Static Analysis
+
+on:
+    push:
+        branches:
+            - main
+            - '*.x'
+    pull_request:
+
+jobs:
+    phpstan:
+        name: PHPStan Analysis
+        runs-on: ubuntu-latest
+        env:
+            COMPOSER_NO_INTERACTION: 1
+        steps:
+            -   uses: actions/checkout@v6
+
+            -   name: Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: 8.5
+                    coverage: none
+
+            -   name: Install dependencies
+                run: |
+                    composer update --prefer-dist --no-interaction --no-progress
+
+            -   name: Run PHPStan
+                run: composer lint -- --no-progress
+
+    style:
+        name: Pint Analysis
+        runs-on: ubuntu-latest
+        env:
+            COMPOSER_NO_INTERACTION: 1
+        steps:
+            -   uses: actions/checkout@v6
+
+            -   name: Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: 8.5
+                    coverage: none
+
+            -   name: Install dependencies
+                run: |
+                    composer update --prefer-dist --no-interaction --no-progress
+
+            -   name: Check style
+                run: composer check-style -- --no-interaction
+
