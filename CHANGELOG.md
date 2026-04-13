@@ -2,50 +2,23 @@
 
 All notable changes to `laravel-countries` will be documented in this file
 
-## 3.4.6 - 2023-14-04
+## 5.0.0
 
-- Adding Russian language to country data and its translations
+### Added
+- Latvian language translations for all countries.
+- GitHub Actions CI workflows for automated testing and static analysis.
+- PHPStan / Larastan static analysis.
+- Laravel Pint for code style enforcement.
+- Docker setup for local development when contributing to the package.
+- Support for Laravel 13.
 
-## 3.4.5 - 2023-14-04
+### Fixed
+- Various PHPStan errors: missing generics, argument and return types.
 
-- Refactor all seed naming system
-## 3.4.4 - 2023-14-04
+### Updated
+- Code style normalized across the entire codebase with Laravel Pint.
 
-- Adding German language to country data and its translations
-
-## 3.4.3 - 2023-13-04
-
-- Remove unused AN country, besides not being officially allocated to ISO 3166-1 alpha-2
-- Remove 'CY' duplicate
-- Minor fixes
-
-## 3.4.2 - 2023-13-04
-
-- Adding Dutch language to country data and its translations
-
-## 3.4.1 - 2023-13-04
-
-- Adding Arabic language to country data and its translations
-
-## 3.4.0 - 2023-13-04
-
-- Support Laravel 10.x
-
-## 3.3.1 - 2022-10-02
-
-- Adding the Philippine country data and its translations
-- Adding an easy way to update country information philippines
-- Minor fixes
-
-## 3.2.0 - 2022-10-02
-
-- Support Laravel 9.x
-
-## 3.1.0 - 2020-11-01
-
-- Update the order that migrations are run
-- Update Readme file
-
-## 3.0.0 - 2020-11-01
-
-- Complete module refactoring
+### Removed
+- Laravel 10 and Laravel 11 support.
+- `doctrine/dbal` and `laravel/legacy-factories` dev dependencies.
+- `AsFlagEmoji` cast class.
