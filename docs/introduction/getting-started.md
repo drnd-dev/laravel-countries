@@ -7,7 +7,7 @@
 Install the package quickly via Composer:
 
 ```sh
-composer require lwwcas/laravel-countries
+composer require drnd-dev/laravel-countries
 
 ```
 

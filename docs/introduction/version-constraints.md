@@ -77,7 +77,7 @@ To ensure your package stays up-to-date automatically for minor changes (such as
 To allow Composer to automatically update the minor and patch versions, you can specify your dependency like this:
 
 ```bash
-composer require lwwcas/laravel-countries:^4.11
+composer require drnd-dev/laravel-countries:^4.11
 ```
 
 Use a version format like **^4.11** to tell Composer to install the **latest minor and patch versions** of **4.11**. This way, **4.11.0.x** and **4.11.x.x** will be automatically updated without requiring manual intervention.
@@ -121,7 +121,7 @@ To lock your project to a specific version (for example, **4.11.0**), preventing
 
 ```json
 "require": {
-    "lwwcas/laravel-countries": "4.11.0"
+    "drnd-dev/laravel-countries": "4.11.0"
 }
 ```
 This ensures that the package will **not** be updated to any newer minor or patch versions.
@@ -133,7 +133,7 @@ For example:
 
 ```json
 "require": {
-    "lwwcas/laravel-countries": "~4.11.0.1"
+    "drnd-dev/laravel-countries": "~4.11.0.1"
 }
 ```
 

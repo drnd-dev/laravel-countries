@@ -9,12 +9,12 @@ trait WithBasePackageTools
     /**
      * Set the name of the package.
      */
-    public string $packageName = 'lwwcas-countries';
+    public string $packageName = 'laravel-countries';
 
     /**
      * Set the github Url of the package.
      */
-    protected string $githubUrl = 'https://github.com/lwwcas/laravel-countries';
+    protected string $githubUrl = 'https://github.com/drnd-dev/laravel-countries';
 
     /**
      * Ask the user if they want to run the migrations.

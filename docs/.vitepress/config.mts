@@ -12,7 +12,7 @@ export default defineConfig({
         [
             'link', {
                 rel: 'icon',
-                href: 'https://raw.githubusercontent.com/lwwcas/laravel-countries/refs/heads/master/docs/assets/favicon/favicon.png'
+                href: 'https://raw.githubusercontent.com/drnd-dev/laravel-countries/refs/heads/master/docs/assets/favicon/favicon.png'
             }
         ],
         [
@@ -36,7 +36,7 @@ export default defineConfig({
             { text: 'Documentation', link: '/introduction/what-is-laravel-countries' }
         ],
 
-        logo: 'https://raw.githubusercontent.com/lwwcas/laravel-countries/refs/heads/master/docs/assets/logo.png',
+        logo: 'https://raw.githubusercontent.com/drnd-dev/laravel-countries/refs/heads/master/docs/assets/logo.png',
         siteTitle: false,
 
         sidebar: [
@@ -133,7 +133,7 @@ export default defineConfig({
         ],
 
         socialLinks: [
-            { icon: 'github', link: 'https://github.com/lwwcas/laravel-countries' }
+            { icon: 'github', link: 'https://github.com/drnd-dev/laravel-countries' }
         ],
 
         footer: {

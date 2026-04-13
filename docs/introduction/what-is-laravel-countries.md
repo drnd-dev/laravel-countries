@@ -15,16 +15,16 @@ Just want to try it out? Skip to the [Quickstart](/introduction/getting-started#
 <img src="/assets/logo.png" alt="My Logo" style="max-height: 35px;">
 
 <p>
-<img decoding="async" loading="lazy" src="https://img.shields.io/github/v/release/lwwcas/laravel-countries?style=flat-square&color=%23ff6f30" alt="release" style=" float: left; padding-right:15px;">
+<img decoding="async" loading="lazy" src="https://img.shields.io/github/v/release/drnd-dev/laravel-countries?style=flat-square&color=%23ff6f30" alt="release" style=" float: left; padding-right:15px;">
 
-<img decoding="async" loading="lazy" src="https://img.shields.io/github/repo-size/lwwcas/laravel-countries?label=size&amp;style=flat-square&color=%23ff6f30" alt="size" style=" float: left; padding-right:15px;">
+<img decoding="async" loading="lazy" src="https://img.shields.io/github/repo-size/drnd-dev/laravel-countries?label=size&amp;style=flat-square&color=%23ff6f30" alt="size" style=" float: left; padding-right:15px;">
 
 
-<img alt="Packagist Downloads" src="https://img.shields.io/packagist/dt/lwwcas/laravel-countries?style=flat-square&color=%23ff6f30" style=" float: left; padding-right:15px;">
+<img alt="Packagist Downloads" src="https://img.shields.io/packagist/dt/drnd-dev/laravel-countries?style=flat-square&color=%23ff6f30" style=" float: left; padding-right:15px;">
 
-<img alt="Packagist Stars" src="https://img.shields.io/packagist/stars/lwwcas/laravel-countries?style=flat-square&color=%23ff6f30" style=" float: left; padding-right:15px;">
+<img alt="Packagist Stars" src="https://img.shields.io/packagist/stars/drnd-dev/laravel-countries?style=flat-square&color=%23ff6f30" style=" float: left; padding-right:15px;">
 
-<img alt="Packagist License" src="https://img.shields.io/packagist/l/lwwcas/laravel-countries?style=flat-square&color=%23ff6f30" style=" float: left; padding-right:15px;">
+<img alt="Packagist License" src="https://img.shields.io/packagist/l/drnd-dev/laravel-countries?style=flat-square&color=%23ff6f30" style=" float: left; padding-right:15px;">
 
 </p>
 
