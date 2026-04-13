@@ -17,6 +17,7 @@ trait HasCountriesList
      */
     public static function getList(): static
     {
+        // @phpstan-ignore-next-line
         return new static;
     }
 
