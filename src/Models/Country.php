@@ -245,11 +245,13 @@ class Country extends CountryModel
 
     /**
      * Interact with the user's first name.
+     *
+     * @return Attribute<string, never>
      */
     protected function officialName(): Attribute
     {
         return Attribute::make(
-            get: fn (string $value) => ucfirst($value),
+            get: fn (string $value) => Str::ucfirst($value),
         );
     }
 
@@ -257,6 +259,8 @@ class Country extends CountryModel
      * Mutator for the iso_alpha_2 attribute.
      *
      * It ensures the ISO Alpha 2 code is always uppercased.
+     *
+     * @return Attribute<string, never>
      */
     protected function isoAlpha2(): Attribute
     {
@@ -269,6 +273,8 @@ class Country extends CountryModel
      * Mutator for the iso_alpha_3 attribute.
      *
      * It ensures the ISO Alpha 3 code is always uppercased.
+     *
+     * @return Attribute<string, never>
      */
     protected function isoAlpha3(): Attribute
     {

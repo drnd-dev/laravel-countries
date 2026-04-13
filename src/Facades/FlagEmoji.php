@@ -19,6 +19,8 @@ class FlagEmoji
 
     /**
      * FlagEmoji constructor.
+     *
+     * @param  Collection<string, array|string>|array  $attributes
      */
     public function __construct(protected Collection|array $attributes)
     {
@@ -43,8 +45,8 @@ class FlagEmoji
      * attribute at the given key.
      *
      * @param  string|int|null  $flagKey  The key of the flag emoji attribute to return.
-     * @return Collection|FlagEmoji|null A Collection of all flag emoji attributes, or the flag emoji
-     *                                   attribute at the given key.
+     * @return Collection<string, FlagEmoji>|FlagEmoji|null A Collection of all flag emoji attributes, or the flag emoji
+     *                                                      attribute at the given key.
      */
     public function get(string|int|null $flagKey = null): Collection|FlagEmoji|null
     {
