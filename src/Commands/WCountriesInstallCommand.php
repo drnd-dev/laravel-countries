@@ -81,14 +81,14 @@ class WCountriesInstallCommand extends Command
     public function askToRunMigrations(): self
     {
         if ($this->confirm('Would you like to run the migrations now?')) {
-            $this->comment('Running migrations...');
+            $this->comment('Publishing migrations...');
 
             $this->callSilently('vendor:publish', [
                 '--tag' => 'lwwcas-countries-migrations',
             ]);
 
-            $this->call('migrate');
-            $this->comment('Publishing migrations...');
+            $this->comment('Running migrations...');
+            $this->call('migrate', ['--force' => true]);
 
             $this->info('Migrations executed successfully!');
             $this->setTrueRunMigrations();
