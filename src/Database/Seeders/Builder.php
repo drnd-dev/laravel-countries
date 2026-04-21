@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Lwwcas\LaravelCountries\Abstract\CountrySeeder;
+use Lwwcas\LaravelCountries\Enum\LanguageEnum;
 use Lwwcas\LaravelCountries\Models\Country;
 use Lwwcas\LaravelCountries\Models\CountryRegion;
 use Lwwcas\LaravelCountries\Models\CountryRegionTranslation;
@@ -27,8 +28,10 @@ class Builder
     {
         DB::beginTransaction();
 
+        $resolvedTranslatableLang = LanguageEnum::from($country->locale)->formatFromConfig();
+
         $region = CountryRegion::query()
-            ->whereSlug($country->region, $country->lang)
+            ->whereSlug($country->region, $resolvedTranslatableLang)
             ->firstOrFail();
 
         $countryCreated = $region->countries()->create([
@@ -93,7 +96,7 @@ class Builder
 
             'is_visible' => true,
 
-            'en' => [
+            $resolvedTranslatableLang => [
                 'name' => $country->name,
                 'slug' => $country->name ? Str::slug($country->name) : '',
             ],
@@ -142,12 +145,12 @@ class Builder
      *
      * @throws Exception
      */
-    public static function regionsTranslations(array $regions, string $lang): void
+    public static function regionsTranslations(array $regions, LanguageEnum $language): void
     {
         DB::beginTransaction();
 
         foreach ($regions as $slug => $region) {
-            $response = CountryRegion::query()->whereTranslation('locale', 'en')
+            $response = CountryRegion::query()->whereTranslation('locale', LanguageEnum::defaultLanguage()->formatFromConfig())
                 ->whereTranslation('slug', $slug)
                 ->first();
 
@@ -158,7 +161,7 @@ class Builder
 
             CountryRegionTranslation::create([
                 'lc_region_id' => $response->id,
-                'locale' => $lang,
+                'locale' => $language->formatFromConfig(),
                 'slug' => Str::slug($region, '-'),
                 'name' => Str::title(trim($region)),
             ]);
@@ -170,7 +173,7 @@ class Builder
     /**
      * Create countries translations.
      */
-    public static function countriesTranslations(array $countries, string $lang): void
+    public static function countriesTranslations(array $countries, LanguageEnum $language): void
     {
         DB::beginTransaction();
 
@@ -185,7 +188,7 @@ class Builder
 
             CountryTranslation::create([
                 'lc_country_id' => $response->id,
-                'locale' => $lang,
+                'locale' => $language->formatFromConfig(),
                 'slug' => Str::slug($country, '-'),
                 'name' => Str::title(trim($country)),
             ]);

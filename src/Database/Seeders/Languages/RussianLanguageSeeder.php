@@ -3,14 +3,16 @@
 namespace Lwwcas\LaravelCountries\Database\Seeders\Languages;
 
 use Illuminate\Database\Seeder;
+use Lwwcas\LaravelCountries\Contracts\LanguageSeedContract;
 use Lwwcas\LaravelCountries\Database\Seeders\Builder;
+use Lwwcas\LaravelCountries\Enum\LanguageEnum;
 
-class RussianLanguageSeeder extends Seeder
+class RussianLanguageSeeder extends Seeder implements LanguageSeedContract
 {
-    /**
-     * Attribute that defines the language of countries
-     */
-    protected string $lang = 'ru';
+    public function languageEnum(): LanguageEnum
+    {
+        return LanguageEnum::RU_RU;
+    }
 
     /**
      * Attribute that defines regions
@@ -28,8 +30,8 @@ class RussianLanguageSeeder extends Seeder
      */
     public function run(): void
     {
-        Builder::regionsTranslations($this->regions, $this->lang);
-        Builder::countriesTranslations($this->countries(), $this->lang);
+        Builder::regionsTranslations($this->regions, $this->languageEnum());
+        Builder::countriesTranslations($this->countries(), $this->languageEnum());
     }
 
     public function countries(): array

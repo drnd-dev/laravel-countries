@@ -3,14 +3,16 @@
 namespace Lwwcas\LaravelCountries\Database\Seeders\Languages;
 
 use Illuminate\Database\Seeder;
+use Lwwcas\LaravelCountries\Contracts\LanguageSeedContract;
 use Lwwcas\LaravelCountries\Database\Seeders\Builder;
+use Lwwcas\LaravelCountries\Enum\LanguageEnum;
 
-class ArabicLanguageSeeder extends Seeder
+class ArabicLanguageSeeder extends Seeder implements LanguageSeedContract
 {
-    /**
-     * Attribute that defines the language of countries
-     */
-    protected string $lang = 'ar';
+    public function languageEnum(): LanguageEnum
+    {
+        return LanguageEnum::AR_SA;
+    }
 
     /**
      * Attribute that defines regions
@@ -28,8 +30,8 @@ class ArabicLanguageSeeder extends Seeder
      */
     public function run(): void
     {
-        Builder::regionsTranslations($this->regions, $this->lang);
-        Builder::countriesTranslations($this->countries(), $this->lang);
+        Builder::regionsTranslations($this->regions, $this->languageEnum());
+        Builder::countriesTranslations($this->countries(), $this->languageEnum());
     }
 
     public function countries(): array

@@ -5,6 +5,7 @@ namespace Lwwcas\LaravelCountries\Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
+use Lwwcas\LaravelCountries\Enum\LanguageEnum;
 use Lwwcas\LaravelCountries\Models\CountryRegion;
 
 class RegionsSeeder extends Seeder
@@ -58,7 +59,7 @@ class RegionsSeeder extends Seeder
 
         foreach ($regions as $region) {
             $countryRegion = CountryRegion::query()
-                ->whereSlug(Str::slug($region['name']), 'en')
+                ->whereSlug(Str::slug($region['name']), LanguageEnum::defaultLanguage()->formatFromConfig())
                 ->first();
 
             if ($countryRegion != null) {
@@ -73,7 +74,7 @@ class RegionsSeeder extends Seeder
                 'tdwg' => $region['tdwg'],
                 'is_visible' => true,
 
-                'en' => [
+                LanguageEnum::defaultLanguage()->formatFromConfig() => [
                     'slug' => Str::slug($region['name'], '-'),
                     'name' => Str::title($region['name']),
                 ],

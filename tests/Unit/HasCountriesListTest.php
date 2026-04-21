@@ -2,13 +2,14 @@
 
 use Illuminate\Support\Collection;
 use Lwwcas\LaravelCountries\Database\Factories\CountryFactory;
+use Lwwcas\LaravelCountries\Enum\LanguageEnum;
 use Lwwcas\LaravelCountries\Facades\FlagEmoji;
 use Lwwcas\LaravelCountries\Models\Country;
 
 it('should return a list of countries with name and slugs efficiently', function () {
     foreach (range(1, 30) as $item) {
         CountryFactory::new()->create([
-            'en' => [
+            LanguageEnum::EN_GB->formatFromConfig() => [
                 'name' => fake()->country().' '.rand(3, 9999),
             ],
         ]);
@@ -25,7 +26,7 @@ it('should return a list of countries with name and slugs efficiently', function
 it('should return a list of countries with name and slugs and flags efficiently', function () {
     foreach (range(1, 30) as $item) {
         CountryFactory::new()->create([
-            'en' => [
+            LanguageEnum::EN_GB->formatFromConfig() => [
                 'name' => fake()->country().' '.rand(3, 9999),
             ],
         ]);
@@ -47,7 +48,7 @@ it('should return a list of countries with name and slugs and flags efficiently'
 it('should return methods returning expected results', function ($method, $keyType, $valueType, $keyName, $valueName) {
     foreach (range(1, 30) as $item) {
         CountryFactory::new()->create([
-            'en' => [
+            LanguageEnum::EN_GB->formatFromConfig() => [
                 'name' => fake()->country().' '.rand(3, 9999),
             ],
         ]);
@@ -84,7 +85,7 @@ it('should return methods returning expected results', function ($method, $keyTy
 it('should return emoji methods returning expected results', function ($method, $keyType) {
     foreach (range(1, 30) as $item) {
         CountryFactory::new()->create([
-            'en' => [
+            LanguageEnum::EN_GB->formatFromConfig() => [
                 'name' => fake()->country().' '.rand(3, 9999),
             ],
         ]);

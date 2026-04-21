@@ -3,14 +3,16 @@
 namespace Lwwcas\LaravelCountries\Database\Seeders\Languages;
 
 use Illuminate\Database\Seeder;
+use Lwwcas\LaravelCountries\Contracts\LanguageSeedContract;
 use Lwwcas\LaravelCountries\Database\Seeders\Builder;
+use Lwwcas\LaravelCountries\Enum\LanguageEnum;
 
-class ItalianLanguageSeeder extends Seeder
+class ItalianLanguageSeeder extends Seeder implements LanguageSeedContract
 {
-    /**
-     * Attribute that defines the language of countries
-     */
-    protected string $lang = 'it';
+    public function languageEnum(): LanguageEnum
+    {
+        return LanguageEnum::IT_IT;
+    }
 
     /**
      * Attribute that defines regions
@@ -28,8 +30,8 @@ class ItalianLanguageSeeder extends Seeder
      */
     public function run(): void
     {
-        Builder::regionsTranslations($this->regions, $this->lang);
-        Builder::countriesTranslations($this->countries(), $this->lang);
+        Builder::regionsTranslations($this->regions, $this->languageEnum());
+        Builder::countriesTranslations($this->countries(), $this->languageEnum());
     }
 
     public function countries(): array

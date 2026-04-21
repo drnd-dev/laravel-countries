@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Lwwcas\LaravelCountries\Database\Seeders\Languages\PortugueseLanguageSeeder;
 use Lwwcas\LaravelCountries\Database\Seeders\LwwcasDatabaseSeeder;
+use Lwwcas\LaravelCountries\Enum\LanguageEnum;
 use Lwwcas\LaravelCountries\Models\CountryRegionTranslation;
 use Lwwcas\LaravelCountries\Models\CountryTranslation;
 
@@ -34,14 +35,15 @@ it('installs a language when english is already seeded', function () {
         ->expectsConfirmation('Do you want to choose again?', 'no')
         ->assertExitCode(0);
 
-    expect(CountryTranslation::where('locale', 'pt')->count())->toBeGreaterThan(0);
+    expect(CountryTranslation::where('locale', LanguageEnum::PT_PT->formatFromConfig())->count())->toBeGreaterThan(0);
 })->group('slow');
 
 it('uninstalls a language when english and portuguese are seeded', function () {
     $this->seed(LwwcasDatabaseSeeder::class);
     $this->seed(PortugueseLanguageSeeder::class);
 
-    $ptTranslationsBefore = CountryTranslation::where('locale', 'pt')->count();
+    $ptLocale = LanguageEnum::PT_PT->formatFromConfig();
+    $ptTranslationsBefore = CountryTranslation::where('locale', $ptLocale)->count();
 
     $this->artisan('w-countries:languages')
         ->expectsChoice('What would you like to do?', 'Uninstall', ['Install', 'Uninstall'])
@@ -54,6 +56,6 @@ it('uninstalls a language when english and portuguese are seeded', function () {
         ->assertExitCode(0);
 
     expect($ptTranslationsBefore)->toBeGreaterThan(0)
-        ->and(CountryTranslation::where('locale', 'pt')->count())->toBe(0)
-        ->and(CountryRegionTranslation::where('locale', 'pt')->count())->toBe(0);
+        ->and(CountryTranslation::where('locale', $ptLocale)->count())->toBe(0)
+        ->and(CountryRegionTranslation::where('locale', $ptLocale)->count())->toBe(0);
 })->group('slow');
