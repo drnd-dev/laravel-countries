@@ -3,14 +3,16 @@
 namespace Lwwcas\LaravelCountries\Database\Seeders\Languages;
 
 use Illuminate\Database\Seeder;
+use Lwwcas\LaravelCountries\Contracts\LanguageSeedContract;
 use Lwwcas\LaravelCountries\Database\Seeders\Builder;
+use Lwwcas\LaravelCountries\Enum\LanguageEnum;
 
-class FrenchLanguageSeeder extends Seeder
+class FrenchLanguageSeeder extends Seeder implements LanguageSeedContract
 {
-    /**
-     * Attribute that defines the language of countries
-     */
-    protected string $lang = 'fr';
+    public function languageEnum(): LanguageEnum
+    {
+        return LanguageEnum::FR_FR;
+    }
 
     /**
      * Attribute that defines regions
@@ -28,8 +30,8 @@ class FrenchLanguageSeeder extends Seeder
      */
     public function run(): void
     {
-        Builder::regionsTranslations($this->regions, $this->lang);
-        Builder::countriesTranslations($this->countries(), $this->lang);
+        Builder::regionsTranslations($this->regions, $this->languageEnum());
+        Builder::countriesTranslations($this->countries(), $this->languageEnum());
     }
 
     public function countries(): array

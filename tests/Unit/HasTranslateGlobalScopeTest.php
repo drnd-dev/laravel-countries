@@ -5,13 +5,14 @@ use Lwwcas\LaravelCountries\Database\Factories\CountryFactory;
 use Lwwcas\LaravelCountries\Database\Factories\CountryRegionFactory;
 use Lwwcas\LaravelCountries\Database\Factories\CountryRegionTranslationFactory;
 use Lwwcas\LaravelCountries\Database\Factories\CountryTranslationFactory;
+use Lwwcas\LaravelCountries\Enum\LanguageEnum;
 use Lwwcas\LaravelCountries\Models\Country;
 use Lwwcas\LaravelCountries\Models\CountryRegion;
 
 it('should remove the translation global scope on Country Model', function () {
     CountryFactory::new()->count(5)->create();
     CountryTranslationFactory::new()->count(7)->create([
-        'locale' => 'en',
+        'locale' => LanguageEnum::EN_GB->formatFromConfig(),
     ]);
 
     $queryWithoutTranslationScope = Country::withNotTranslation()->get();
@@ -27,7 +28,7 @@ it('should remove the translation global scope on Country Model', function () {
 it('should apply the translation global scope on Country Model', function () {
     CountryFactory::new()->count(5)->create();
     CountryTranslationFactory::new()->count(7)->create([
-        'locale' => 'en',
+        'locale' => LanguageEnum::EN_GB->formatFromConfig(),
     ]);
 
     $queryWithoutTranslationScope = Country::all();
@@ -43,7 +44,7 @@ it('should apply the translation global scope on Country Model', function () {
 it('should remove the translation global scope on Region Model', function () {
     CountryRegionFactory::new()->count(5)->create();
     CountryRegionTranslationFactory::new()->count(7)->create([
-        'locale' => 'en',
+        'locale' => LanguageEnum::EN_GB->formatFromConfig(),
     ]);
 
     $queryWithoutTranslationScope = CountryRegion::withNotTranslation()->get();
@@ -59,7 +60,7 @@ it('should remove the translation global scope on Region Model', function () {
 it('should apply the translation global scope on Region Model', function () {
     CountryRegionFactory::new()->count(5)->create();
     CountryRegionTranslationFactory::new()->count(7)->create([
-        'locale' => 'en',
+        'locale' => LanguageEnum::EN_GB->formatFromConfig(),
     ]);
 
     $queryWithoutTranslationScope = CountryRegion::all();

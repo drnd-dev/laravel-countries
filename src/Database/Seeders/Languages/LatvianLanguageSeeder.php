@@ -3,14 +3,16 @@
 namespace Lwwcas\LaravelCountries\Database\Seeders\Languages;
 
 use Illuminate\Database\Seeder;
+use Lwwcas\LaravelCountries\Contracts\LanguageSeedContract;
 use Lwwcas\LaravelCountries\Database\Seeders\Builder;
+use Lwwcas\LaravelCountries\Enum\LanguageEnum;
 
-class LatvianLanguageSeeder extends Seeder
+class LatvianLanguageSeeder extends Seeder implements LanguageSeedContract
 {
-    /**
-     * Attribute that defines the language of countries
-     */
-    protected string $lang = 'lv';
+    public function languageEnum(): LanguageEnum
+    {
+        return LanguageEnum::LV_LV;
+    }
 
     /**
      * Attribute that defines regions
@@ -28,8 +30,8 @@ class LatvianLanguageSeeder extends Seeder
      */
     public function run(): void
     {
-        Builder::regionsTranslations($this->regions, $this->lang);
-        Builder::countriesTranslations($this->countries(), $this->lang);
+        Builder::regionsTranslations($this->regions, $this->languageEnum());
+        Builder::countriesTranslations($this->countries(), $this->languageEnum());
     }
 
     public function countries(): array

@@ -14,6 +14,12 @@ abstract class CountrySeeder extends Seeder implements CountrySeedInterface
     public string $lang = 'en';
 
     /**
+     * Attribute that defines the locale with an underscore of the country.
+     * Defaults to 'en_GB' for English (Great Britain).
+     */
+    public string $locale = 'en_GB';
+
+    /**
      * Attribute that defines the region of the country.
      * Stores regional information like continent or geographical region.
      */

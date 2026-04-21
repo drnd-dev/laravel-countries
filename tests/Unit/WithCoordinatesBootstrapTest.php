@@ -3,6 +3,7 @@
 use Lwwcas\LaravelCountries\Database\Factories\CountryCoordinatesFactory;
 use Lwwcas\LaravelCountries\Database\Factories\CountryFactory;
 use Lwwcas\LaravelCountries\Database\Factories\CountryRegionFactory;
+use Lwwcas\LaravelCountries\Enum\LanguageEnum;
 
 it('should return the latitude in decimal degrees', function () {
     $country = CountryFactory::new()->create();
@@ -167,13 +168,13 @@ it('should returns coordinates in meta tag ICBM format', function () {
 
 it('should returns coordinates in geo meta tag format', function () {
     $region = CountryRegionFactory::new()->create([
-        'en' => [
+        LanguageEnum::EN_GB->formatFromConfig() => [
             'name' => 'Europe',
         ],
     ]);
     $country = CountryFactory::new()->create([
         'lc_region_id' => $region->id,
-        'en' => [
+        LanguageEnum::EN_GB->formatFromConfig() => [
             'name' => 'Brasil',
         ],
     ]);
@@ -181,7 +182,7 @@ it('should returns coordinates in geo meta tag format', function () {
         'lc_country_id' => $country->id,
     ]);
 
-    $locale = 'en';
+    $locale = LanguageEnum::EN_GB->formatFromConfig();
     $data = $country->coordinatesInGeoMetaTags($locale);
 
     expect($data)->not()->toBeNull();

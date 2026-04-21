@@ -1,6 +1,7 @@
 <?php
 
 use Lwwcas\LaravelCountries\Database\Factories\CountryFactory;
+use Lwwcas\LaravelCountries\Enum\LanguageEnum;
 use Lwwcas\LaravelCountries\Models\Country;
 
 it('should filters countries by border', function () {
@@ -79,7 +80,7 @@ it('should return borders with information of country', function () {
         'official_name' => 'Brasil',
         'iso_alpha_2' => 'BR',
         'borders' => ['ar', 'bo', 'co', 'gf', 'gy', 'py', 'pe', 'sr', 'uy', 've'],
-        'en' => [
+        LanguageEnum::EN_GB->formatFromConfig() => [
             'name' => 'Brazil',
         ],
     ]);
@@ -89,7 +90,7 @@ it('should return borders with information of country', function () {
         'official_name' => 'Argentine Republic',
         'iso_alpha_2' => 'AR',
         'borders' => ['bo', 'br', 'cl', 'py', 'uy'],
-        'en' => [
+        LanguageEnum::EN_GB->formatFromConfig() => [
             'name' => 'Argentine',
         ],
     ]);
@@ -99,7 +100,7 @@ it('should return borders with information of country', function () {
         'official_name' => 'Plurinational State of Bolivia',
         'iso_alpha_2' => 'BO',
         'borders' => ['ar', 'br', 'cl', 'py', 'pe'],
-        'en' => [
+        LanguageEnum::EN_GB->formatFromConfig() => [
             'name' => 'Bolivia',
         ],
     ]);
@@ -109,7 +110,7 @@ it('should return borders with information of country', function () {
         'official_name' => 'Republic of Colombia',
         'iso_alpha_2' => 'CO',
         'borders' => ['br', 'ec', 'pa', 'pe', 've'],
-        'en' => [
+        LanguageEnum::EN_GB->formatFromConfig() => [
             'name' => 'Colombia',
         ],
     ]);
@@ -119,7 +120,7 @@ it('should return borders with information of country', function () {
         'official_name' => 'French Guiana',
         'iso_alpha_2' => 'GF',
         'borders' => ['br', 'sr'],
-        'en' => [
+        LanguageEnum::EN_GB->formatFromConfig() => [
             'name' => 'Guiana Francese',
         ],
     ]);
@@ -136,8 +137,8 @@ it('should return borders with information of country', function () {
         'iso_alpha_2' => $secondCountry->iso_alpha_2,
         'iso_alpha_3' => $secondCountry->iso_alpha_3,
         'official_name' => $secondCountry->official_name,
-        'name' => $secondCountry->translate('en')->name,
-        'locale' => $secondCountry->translate('en')->locale,
+        'name' => $secondCountry->translate(LanguageEnum::EN_GB->formatFromConfig())->name,
+        'locale' => $secondCountry->translate(LanguageEnum::EN_GB->formatFromConfig())->locale,
     ]);
 });
 
@@ -147,7 +148,7 @@ it('should return borders with flag of country', function () {
         'official_name' => 'Brasil',
         'iso_alpha_2' => 'BR',
         'borders' => ['ar', 'bo', 'co', 'gf', 'gy', 'py', 'pe', 'sr', 'uy', 've'],
-        'en' => [
+        LanguageEnum::EN_GB->formatFromConfig() => [
             'name' => 'Brazil',
         ],
     ]);
@@ -157,7 +158,7 @@ it('should return borders with flag of country', function () {
         'official_name' => 'Argentine Republic',
         'iso_alpha_2' => 'AR',
         'borders' => ['bo', 'br', 'cl', 'py', 'uy'],
-        'en' => [
+        LanguageEnum::EN_GB->formatFromConfig() => [
             'name' => 'Argentine',
         ],
     ]);
@@ -167,7 +168,7 @@ it('should return borders with flag of country', function () {
         'official_name' => 'Plurinational State of Bolivia',
         'iso_alpha_2' => 'BO',
         'borders' => ['ar', 'br', 'cl', 'py', 'pe'],
-        'en' => [
+        LanguageEnum::EN_GB->formatFromConfig() => [
             'name' => 'Bolivia',
         ],
     ]);
@@ -177,7 +178,7 @@ it('should return borders with flag of country', function () {
         'official_name' => 'Republic of Colombia',
         'iso_alpha_2' => 'CO',
         'borders' => ['br', 'ec', 'pa', 'pe', 've'],
-        'en' => [
+        LanguageEnum::EN_GB->formatFromConfig() => [
             'name' => 'Colombia',
         ],
     ]);
@@ -187,12 +188,12 @@ it('should return borders with flag of country', function () {
         'official_name' => 'French Guiana',
         'iso_alpha_2' => 'GF',
         'borders' => ['br', 'sr'],
-        'en' => [
+        LanguageEnum::EN_GB->formatFromConfig() => [
             'name' => 'Guiana Francese',
         ],
     ]);
 
-    $country = Country::where('iso_alpha_2', 'BR')->first();
+    $country = Country::query()->where('iso_alpha_2', 'BR')->first();
     $borders = $country->bordersWithFlags();
 
     expect($country)->toBeInstanceOf(Country::class);
@@ -204,8 +205,8 @@ it('should return borders with flag of country', function () {
         'iso_alpha_2' => $secondCountry->iso_alpha_2,
         'iso_alpha_3' => $secondCountry->iso_alpha_3,
         'official_name' => $secondCountry->official_name,
-        'name' => $secondCountry->translate('en')->name,
-        'locale' => $secondCountry->translate('en')->locale,
+        'name' => $secondCountry->translate(LanguageEnum::EN_GB->formatFromConfig())->name,
+        'locale' => $secondCountry->translate(LanguageEnum::EN_GB->formatFromConfig())->locale,
         'flag_emoji' => $secondCountry->flag_emoji['img'],
     ]);
 });

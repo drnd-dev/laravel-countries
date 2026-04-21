@@ -4,6 +4,7 @@ namespace Lwwcas\LaravelCountries\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Schema;
+use Lwwcas\LaravelCountries\Enum\LanguageEnum;
 use Lwwcas\LaravelCountries\Models\CountryRegionTranslation;
 use Lwwcas\LaravelCountries\Models\CountryRegionTranslation as RegionsLanguages;
 use Lwwcas\LaravelCountries\Models\CountryTranslation;
@@ -50,7 +51,7 @@ class WCountriesRunLanguagesSeeds extends Command
         $this->startWarnings();
 
         $installedLanguages = $this->getInstalledLanguages();
-        $notInstalledLanguages = array_diff_assoc($this->languages, $installedLanguages);
+        $notInstalledLanguages = array_diff_assoc($this->getSelectableLanguageSeedersByTitle(), $installedLanguages);
         unset($notInstalledLanguages['None'], $notInstalledLanguages['All']);
 
         $this->info('English is the default language and must be installed, and it cannot be removed.');
@@ -145,21 +146,24 @@ class WCountriesRunLanguagesSeeds extends Command
             $languagesConfirmed = $this->confirm('Do you want to choose again?', false);
         } while ($languagesConfirmed);
 
+        $languagesByCode = $this->getLanguagesByCode();
         $keysToDelete = [];
         foreach ($selectedLanguages as $language) {
-            $key = array_search($language, $this->languagesByLocale);
+            $key = array_search($language, $languagesByCode);
             if ($key !== false) {
                 $keysToDelete[] = $key;
             }
         }
 
-        CountryTranslation::query()->select('locale')
-            ->where('locale', '!=', 'en')
+        CountryTranslation::query()
+            ->select('locale')
+            ->where('locale', '!=', LanguageEnum::defaultLanguage()->formatFromConfig())
             ->whereIn('locale', $keysToDelete)
             ->delete();
 
-        CountryRegionTranslation::query()->select('locale')
-            ->where('locale', '!=', 'en')
+        CountryRegionTranslation::query()
+            ->select('locale')
+            ->where('locale', '!=', LanguageEnum::defaultLanguage()->formatFromConfig())
             ->whereIn('locale', $keysToDelete)
             ->delete();
 
@@ -184,19 +188,23 @@ class WCountriesRunLanguagesSeeds extends Command
     protected function getInstalledLanguages(): array
     {
         $installedLanguages = [];
-        $locales = RegionsLanguages::select('locale')
+        $locales = RegionsLanguages::query()
+            ->select('locale')
             ->distinct()
             ->pluck('locale')
             ->toArray();
 
+        $languagesByCode = $this->getLanguagesByCode();
+        $languagesByTitle = $this->getSelectableLanguageSeedersByTitle();
+
         foreach ($locales as $locale) {
-            $languageName = $this->languagesByLocale[$locale] ?? null;
+            $languageName = $languagesByCode[$locale] ?? null;
 
             if (! $languageName) {
                 continue;
             }
 
-            $languageClass = $this->languages[$languageName] ?? null;
+            $languageClass = $languagesByTitle[$languageName] ?? null;
 
             if ($languageClass) {
                 $installedLanguages[$languageName] = $languageClass;

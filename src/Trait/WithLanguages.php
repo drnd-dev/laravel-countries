@@ -2,57 +2,31 @@
 
 namespace Lwwcas\LaravelCountries\Trait;
 
-use Lwwcas\LaravelCountries\Database\Seeders\Languages\ArabicLanguageSeeder as Arabic;
-use Lwwcas\LaravelCountries\Database\Seeders\Languages\DutchLanguageSeeder as Dutch;
-use Lwwcas\LaravelCountries\Database\Seeders\Languages\FrenchLanguageSeeder as French;
-use Lwwcas\LaravelCountries\Database\Seeders\Languages\GermanLanguageSeeder as German;
-use Lwwcas\LaravelCountries\Database\Seeders\Languages\ItalianLanguageSeeder as Italian;
-use Lwwcas\LaravelCountries\Database\Seeders\Languages\LatvianLanguageSeeder as Latvian;
-use Lwwcas\LaravelCountries\Database\Seeders\Languages\PortugueseLanguageSeeder as Portuguese;
-use Lwwcas\LaravelCountries\Database\Seeders\Languages\RussianLanguageSeeder as Russian;
-use Lwwcas\LaravelCountries\Database\Seeders\Languages\SpanishLanguageSeeder as Spanish;
-use Lwwcas\LaravelCountries\Database\Seeders\LwwcasDatabaseSeeder as English;
+use Lwwcas\LaravelCountries\Enum\LanguageEnum;
 use Lwwcas\LaravelCountries\Models\CountryRegionTranslation as RegionsLanguages;
 
 trait WithLanguages
 {
-    /**
-     * The list of languages that can be installed.
-     *
-     * @var array<string, class-string|null>
-     */
-    public array $languages = [
-        'None' => null,
-        'All' => null,
-        'English' => English::class,
-        'Arabic' => Arabic::class,
-        'Dutch' => Dutch::class,
-        'French' => French::class,
-        'German' => German::class,
-        'Italian' => Italian::class,
-        'Latvian' => Latvian::class,
-        'Portuguese' => Portuguese::class,
-        'Russian' => Russian::class,
-        'Spanish' => Spanish::class,
-    ];
+    public function getSelectableLanguageSeedersByTitle(): array
+    {
+        $languages = array_combine(
+            array_map(fn (LanguageEnum $case) => $case->title(), LanguageEnum::cases()),
+            array_map(fn (LanguageEnum $case) => $case->seederClassString(), LanguageEnum::cases()),
+        );
 
-    /**
-     * The list of languages that can be installed by key.
-     *
-     * @var array<string, string>
-     */
-    public array $languagesByLocale = [
-        'en' => 'English',
-        'ar' => 'Arabic',
-        'nl' => 'Dutch',
-        'fr' => 'French',
-        'de' => 'German',
-        'it' => 'Italian',
-        'lv' => 'Latvian',
-        'pt' => 'Portuguese',
-        'ru' => 'Russian',
-        'es' => 'Spanish',
-    ];
+        $languages['None'] = null;
+        $languages['All'] = null;
+
+        return $languages;
+    }
+
+    public function getLanguagesByCode(): array
+    {
+        return array_combine(
+            array_map(fn (LanguageEnum $case) => $case->formatFromConfig(), LanguageEnum::cases()),
+            array_map(fn (LanguageEnum $case) => $case->title(), LanguageEnum::cases()),
+        );
+    }
 
     /**
      * Ask the user if they want to run the seeds for the languages
@@ -63,8 +37,8 @@ trait WithLanguages
     public function askToRunSeeds(?array $languages = null): self
     {
         if ($languages === null) {
-            $languages = array_keys($this->languages);
-            $key = array_search('English', $languages);
+            $languages = array_keys($this->getSelectableLanguageSeedersByTitle());
+            $key = array_search(LanguageEnum::EN_GB->title(), $languages);
             if ($key !== false) {
                 unset($languages[$key]); // English
             }
@@ -131,38 +105,38 @@ trait WithLanguages
     {
         if (in_array('None', $selectedLanguages)) {
             $selectedLanguages = [];
-            array_unshift($selectedLanguages, 'English');
+            array_unshift($selectedLanguages, LanguageEnum::EN_GB->title());
         }
 
         if (in_array('All', $selectedLanguages)) {
-            $selectedLanguages = array_keys($this->languages);
+            $selectedLanguages = array_keys($this->getSelectableLanguageSeedersByTitle());
             $noneKey = array_search('None', $selectedLanguages);
             $allKey = array_search('All', $selectedLanguages);
             unset($selectedLanguages[$noneKey], $selectedLanguages[$allKey]);
         }
 
         // English must be the first language on the array, because it's the default
-        if (in_array('English', $selectedLanguages) === false) {
+        if (in_array(LanguageEnum::EN_GB->title(), $selectedLanguages) === false) {
             $enLocale = RegionsLanguages::select('locale')
-                ->where('locale', 'en')
+                ->where('locale', LanguageEnum::defaultLanguage()->formatFromConfig())
                 ->limit(1)
                 ->first();
 
             if ($enLocale === null) {
-                array_unshift($selectedLanguages, 'English');
+                array_unshift($selectedLanguages, LanguageEnum::EN_GB->title());
             }
         }
 
-        $filteredLanguages = collect($this->languages)
+        $filteredLanguages = collect($this->getSelectableLanguageSeedersByTitle())
             ->filter(function ($class, $language) use ($selectedLanguages) {
                 return in_array($language, $selectedLanguages);
             })
             ->all();
 
         $this->comment('Running languages...');
-        foreach ($filteredLanguages as $language => $class) {
+        foreach ($filteredLanguages as $language => $seeder) {
             $this->callSilently('db:seed', [
-                '--class' => $class,
+                '--class' => $seeder,
             ]);
             $this->comment("{$language} executed successfully.");
         }
