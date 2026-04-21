@@ -2,6 +2,13 @@
 
 All notable changes to `laravel-countries` will be documented in this file
 
+## 5.1.0
+### Added
+- Language format configuration (#2).
+
+### Fixed
+- Database migration publishing (#3).
+
 ## 5.0.0
 
 ### Added
