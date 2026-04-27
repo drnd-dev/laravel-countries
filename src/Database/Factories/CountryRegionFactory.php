@@ -38,7 +38,7 @@ class CountryRegionFactory extends Factory
             'iso_alpha_2' => fake()->countryCode().rand(1, 9999),
             'icao' => Str::upper(fake()->randomLetter().fake()->randomLetter()),
             'iucn' => substr(fake()->randomElement($this->regions).' '.fake()->word(), 0, 10),
-            'tdwg' => fake()->word(),
+            'tdwg' => substr(fake()->word(), 0, 10),
             'is_visible' => true,
         ];
     }
