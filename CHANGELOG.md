@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-countries` will be documented in this file
 
+## 5.1.1
+### Fixed
+- Tests failing due CountryRegionFactory random length (#5).
+
 ## 5.1.0
 ### Added
 - Language format configuration (#2).
